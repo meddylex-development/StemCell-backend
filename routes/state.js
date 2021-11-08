@@ -7,5 +7,6 @@ api.get("/state/list", State.listStates);
 api.post("/state/:name?", State.listStates);
 api.put('/state/:id', State.updateState);
 api.delete('/state/:id', State.deleteState);
+api.delete('/state/list', State.deleteAllState);
 
 module.exports = api;

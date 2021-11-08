@@ -83,10 +83,32 @@ const deleteState = (req, res) => {
     );
 };
 /* *********** END - Delete state method *********** */
+/* ********** START - Delete all states method ********** */
+const deleteAllState = (req, res) => {
+    // let id = req.params["id"];
+    let params = req.body;
+    console.log('params: ', params);
+    State.deleteMany(
+        {}, 
+        (err, dataState) => {
+            if (err) {
+                res.status(500).send({ msg: "Error al conectar al servidor", stateRequest: false });
+            } else {
+                if (dataState) {
+                    res.status(200).send({ state: dataState, stateRequest: true });
+                } else {
+                    res.status(403).send({ msg: "El estado no se pudo eliminar", stateRequest: false });
+                }
+            }
+        }
+    );
+};
+/* *********** END - Delete all states method *********** */
 
 module.exports = {
     addState,
     listStates,
     updateState,
     deleteState,
+    deleteAllState,
 };
