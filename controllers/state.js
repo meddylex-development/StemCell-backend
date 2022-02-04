@@ -38,6 +38,22 @@ const listStates = (req, res) => {
     });
 };
 /* *********** END - List all states method *********** */
+/* ********** START - List all states method ********** */
+const listStatesById = (req, res) => {
+    let isState = req.params["id"];
+    State.find({ _id: isState }, (err, dataState) => {
+        if (err) {
+          res.status(500).send({ msg: "Error al conectar al servidor", stateRequest: false });
+        } else {
+          if (dataState) {
+            res.status(200).send({ state: dataState, stateRequest: true });
+          } else {
+            res.status(401).send({ msg: "No existen estados", stateRequest: false });
+          }
+        }
+    });
+};
+/* *********** END - List all states method *********** */
 /* ********** START - Update state method ********** */
 const updateState = (req, res) => {
     let id = req.params["id"];
@@ -108,6 +124,7 @@ const deleteAllState = (req, res) => {
 module.exports = {
     addState,
     listStates,
+    listStatesById,
     updateState,
     deleteState,
     deleteAllState,
