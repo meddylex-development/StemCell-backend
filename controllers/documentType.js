@@ -15,7 +15,7 @@ const addDocumentType = (req, res) => {
             res.status(500).send({ msg: "Error al conectar al servidor", stateRequest: false });
         } else {
             if (documentTypeSaved) {
-                res.status(200).send({ state: documentTypeSaved, stateRequest: true });
+                res.status(200).send({ data: documentTypeSaved, stateRequest: true });
             } else {
                 res.status(401).send({ msg: "No se pudo registrar el tipo de documento", stateRequest: false });
             }
@@ -31,7 +31,7 @@ const listDocumentTypes = (req, res) => {
           res.status(500).send({ msg: "Error al conectar al servidor", stateRequest: false });
         } else {
           if (dataDocumentType) {
-            res.status(200).send({ state: dataDocumentType, stateRequest: true });
+            res.status(200).send({ data: dataDocumentType, stateRequest: true });
           } else {
             res.status(401).send({ msg: "No existen estados", stateRequest: false });
           }

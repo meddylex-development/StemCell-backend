@@ -15,7 +15,7 @@ const addCountry = (req, res) => {
             res.status(500).send({ msg: "Error al conectar al servidor", stateRequest: false });
         } else {
             if (countrySaved) {
-                res.status(200).send({ country: countrySaved, stateRequest: true });
+                res.status(200).send({ data: countrySaved, stateRequest: true });
             } else {
                 res.status(401).send({ msg: "No se pudo registrar el país", stateRequest: false });
             }
@@ -31,7 +31,7 @@ const listCountries = (req, res) => {
           res.status(500).send({ msg: "Error al conectar al servidor", stateRequest: false });
         } else {
           if (dataCountry) {
-            res.status(200).send({ country: dataCountry, stateRequest: true });
+            res.status(200).send({ data: dataCountry, stateRequest: true });
           } else {
             res.status(401).send({ msg: "No existen paises", stateRequest: false });
           }
@@ -39,6 +39,22 @@ const listCountries = (req, res) => {
     });
 };
 /* *********** END - List all countries method *********** */
+/* ********** START - List all cities method ********** */
+const listCountriesById = (req, res) => {
+    let idCountry = req.params["id"];
+    Country.find({ _id: idCountry }, (err, dataCountry) => {
+        if (err) {
+          res.status(500).send({ msg: "Error al conectar al servidor", stateRequest: false });
+        } else {
+          if (dataCountry) {
+            res.status(200).send({ data: dataCountry, stateRequest: true });
+          } else {
+            res.status(401).send({ msg: "No existen ciudades", stateRequest: false });
+          }
+        }
+    });
+};
+/* *********** END - List all cities method *********** */
 /* ********** START - Update country method ********** */
 const updateCountry = (req, res) => {
     let id = req.params["id"];
@@ -56,7 +72,7 @@ const updateCountry = (req, res) => {
                 res.status(500).send({ msg: "Error al conectar al servidor", stateRequest: false });
             } else {
                 if (dataCountry) {
-                    res.status(200).send({ country: dataCountry, stateRequest: true });
+                    res.status(200).send({ data: dataCountry, stateRequest: true });
                 } else {
                     res.status(403).send({ msg: "El país no se pudo actualizar", stateRequest: false });
                 }
@@ -76,7 +92,7 @@ const deleteCountry = (req, res) => {
                 res.status(500).send({ msg: "Error al conectar al servidor", stateRequest: false });
             } else {
                 if (dataCountry) {
-                    res.status(200).send({ country: dataCountry, stateRequest: true });
+                    res.status(200).send({ data: dataCountry, stateRequest: true });
                 } else {
                     res.status(403).send({ msg: "El país no se pudo eliminar", stateRequest: false });
                 }
@@ -89,6 +105,7 @@ const deleteCountry = (req, res) => {
 module.exports = {
     addCountry,
     listCountries,
+    listCountriesById,
     updateCountry,
     deleteCountry,
 };
