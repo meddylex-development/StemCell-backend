@@ -9,5 +9,6 @@ api.get("/profile/:id?", Auth, Profile.listProfileByID);
 api.post("/profile/:name?", Auth, Profile.listProfiles);
 api.put('/profile/:id', Auth, Profile.updateProfile);
 api.delete('/profile/:id', Auth, Profile.deleteProfile);
+api.delete("/profile", Auth, Profile.deleteAllProfiles);
 
 module.exports = api;

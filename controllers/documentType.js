@@ -67,7 +67,7 @@ const updateDocumentType = (req, res) => {
     DocumentType.findByIdAndUpdate(
         { _id: id },
         { 
-            idState: params.idState, 
+            idStatus: params.idStatus, 
             name: params.name, 
             description: params.description, 
             // dateCreated: parseInt(params.dateCreated), 

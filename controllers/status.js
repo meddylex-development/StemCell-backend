@@ -108,6 +108,28 @@ const deleteStatus = (req, res) => {
     );
 };
 /* *********** END - Delete status method *********** */
+/* ********** START - Delete all status method ********** */
+const deleteAllStatus = (req, res) => {
+    // let id = req.params["id"];
+    let params = req.body;
+    console.log('params: ', params);
+    return false;
+    Status.deleteMany(
+        {}, 
+        (err, dataStatus) => {
+            if (err) {
+                res.status(500).send({ data: "Error al conectar al servidor", statusRequest: false });
+            } else {
+                if (dataStatus) {
+                    res.status(200).send({ data: dataStatus, statusRequest: true });
+                } else {
+                    res.status(403).send({ data: "No se pudo eliminar los estados", statusRequest: false });
+                }
+            }
+        }
+    );
+};
+/* *********** END - Delete all status method *********** */
 
 module.exports = {
     addStatus,
@@ -115,4 +137,5 @@ module.exports = {
     listStatusByID,
     updateStatus,
     deleteStatus,
+    deleteAllStatus,
 };

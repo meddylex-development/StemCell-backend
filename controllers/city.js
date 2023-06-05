@@ -66,7 +66,7 @@ const updateCity = (req, res) => {
     City.findByIdAndUpdate(
         { _id: id },
         { 
-            idState: params.idState, 
+            idStatus: params.idStatus, 
             name: params.name, 
             description: params.description, 
             // dateCreated: parseInt(params.dateCreated), 

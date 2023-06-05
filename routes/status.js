@@ -9,5 +9,6 @@ api.get("/status/:id?", Auth, Status.listStatusByID);
 api.post("/status/:name?", Auth, Status.listStatus);
 api.put("/status/:id", Auth, Status.updateStatus);
 api.delete("/status/:id", Auth, Status.deleteStatus);
+api.delete("/status", Auth, Status.deleteAllStatus);
 
 module.exports = api;

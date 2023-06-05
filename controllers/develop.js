@@ -19,7 +19,7 @@ const getNewToken = async (req, res) => {
     let dataToken = await Utils.createToken(data, dateExpired);
     // return false;
     if (!dataToken) {
-        res.status(500).send({ msg: "Error al generar el token", statusRequest: false });
+        res.status(500).send({ data: "Error al generar el token", statusRequest: false });
     } else {
         res.status(200).send({ token: `Bearer ${ dataToken.data }`, payload: dataToken.data, dateCreated: dateCreatedFormat, dateExpired: dateExpiredFormat, statusRequest: true });
         // if (statusSaved) {
