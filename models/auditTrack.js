@@ -5,7 +5,7 @@ let Schema = mongoose.Schema;
 
 let auditTrackSchema = Schema({
     idUser: { type: Schema.ObjectId, ref: "user" },
-    idState: { type: Schema.ObjectId, ref: "state" },
+    idStatus: { type: Schema.ObjectId, ref: "status" },
     module: String,
     description: String,
     dateCreated: Number,

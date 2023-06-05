@@ -1,23 +1,25 @@
-let Country = require("../models/country");
 let moment = require("moment");
+let Country = require("../models/country");
+let Utils = require("../utils/utils");
 
 /* ********** START - Add new country method ********** */
 const addCountry = (req, res) => {
     let params = req.body;
+    let dateNow = Utils.getDateNowMilisec();
     let country_ = new Country();
-    country_.idState = params.idState;
+    country_.idStatus = params.idStatus;
     country_.name = params.name;
     country_.description = params.description;
-    country_.dateCreated = moment().valueOf();
-    country_.dateUpdated = moment().valueOf();
+    country_.dateCreated = dateNow;
+    country_.dateUpdated = dateNow;
     country_.save((err, countrySaved) => {
         if (err) {
-            res.status(500).send({ msg: "Error al conectar al servidor", stateRequest: false });
+            res.status(500).send({ data: "Error al conectar al servidor", statusRequest: false });
         } else {
             if (countrySaved) {
-                res.status(200).send({ country: countrySaved, stateRequest: true });
+                res.status(200).send({ data: countrySaved, statusRequest: true });
             } else {
-                res.status(401).send({ msg: "No se pudo registrar el país", stateRequest: false });
+                res.status(401).send({ data: "No se pudo registrar el país", statusRequest: false });
             }
         }
     });
@@ -26,39 +28,57 @@ const addCountry = (req, res) => {
 /* ********** START - List all countries method ********** */
 const listCountries = (req, res) => {
     let name = req.params["name"];
-    Country.find({ name: new RegExp(name, "i") }, (err, dataCountry) => {
+    Country.find({ name: new RegExp(name, "i") }, (err, dataResponse) => {
         if (err) {
-          res.status(500).send({ msg: "Error al conectar al servidor", stateRequest: false });
+          res.status(500).send({ data: "Error al conectar al servidor", statusRequest: false });
         } else {
-          if (dataCountry) {
-            res.status(200).send({ country: dataCountry, stateRequest: true });
+          if (dataResponse) {
+            res.status(200).send({ data: dataResponse, statusRequest: true });
           } else {
-            res.status(401).send({ msg: "No existen paises", stateRequest: false });
+            res.status(401).send({ data: "No existen paises", statusRequest: false });
           }
         }
     });
 };
 /* *********** END - List all countries method *********** */
+/* ********** START - List all states method ********** */
+const listCountryByID = (req, res) => {
+    let id = req.params["id"];
+    console.log('req.params: ', req.params);
+    Country.find({ _id: id }, (err, dataResponse) => {
+        if (err) {
+          res.status(500).send({ data: "Error al conectar al servidor", statusRequest: false });
+        } else {
+          if (dataResponse) {
+            res.status(200).send({ data: dataResponse, statusRequest: true });
+          } else {
+            res.status(401).send({ data: "No existe pais", statusRequest: false });
+          }
+        }
+    });
+};
+/* *********** END - List all states method *********** */
 /* ********** START - Update country method ********** */
 const updateCountry = (req, res) => {
     let id = req.params["id"];
     let params = req.body;
+    let dateNow = Utils.getDateNowMilisec();
     Country.findByIdAndUpdate(
         { _id: id },
         { 
-            idState: params.idState, 
+            idStatus: params.idStatus, 
             name: params.name, 
             description: params.description, 
             // dateCreated: parseInt(params.dateCreated), 
-            dateUpdated: moment().valueOf(), 
+            dateUpdated: dateNow, 
         }, (err, dataCountry) => {
             if (err) {
-                res.status(500).send({ msg: "Error al conectar al servidor", stateRequest: false });
+                res.status(500).send({ data: "Error al conectar al servidor", statusRequest: false });
             } else {
                 if (dataCountry) {
-                    res.status(200).send({ country: dataCountry, stateRequest: true });
+                    res.status(200).send({ data: dataCountry, statusRequest: true });
                 } else {
-                    res.status(403).send({ msg: "El país no se pudo actualizar", stateRequest: false });
+                    res.status(403).send({ data: "El país no se pudo actualizar", statusRequest: false });
                 }
             }
         }
@@ -73,12 +93,12 @@ const deleteCountry = (req, res) => {
         { _id: id }, 
         (err, dataCountry) => {
             if (err) {
-                res.status(500).send({ msg: "Error al conectar al servidor", stateRequest: false });
+                res.status(500).send({ data: "Error al conectar al servidor", statusRequest: false });
             } else {
                 if (dataCountry) {
-                    res.status(200).send({ country: dataCountry, stateRequest: true });
+                    res.status(200).send({ data: dataCountry, statusRequest: true });
                 } else {
-                    res.status(403).send({ msg: "El país no se pudo eliminar", stateRequest: false });
+                    res.status(403).send({ data: "El país no se pudo eliminar", statusRequest: false });
                 }
             }
         }
@@ -89,6 +109,7 @@ const deleteCountry = (req, res) => {
 module.exports = {
     addCountry,
     listCountries,
+    listCountryByID,
     updateCountry,
     deleteCountry,
 };

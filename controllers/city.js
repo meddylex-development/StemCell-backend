@@ -1,24 +1,26 @@
-let City = require("../models/city");
 let moment = require("moment");
+let City = require("../models/city");
+let Utils = require("../utils/utils");
 
 /* ********** START - Add new city method ********** */
 const addCity = (req, res) => {
     let params = req.body;
+    let dateNow = Utils.getDateNowMilisec();
     let city_ = new City();
-    city_.idState = params.idState;
+    city_.idStatus = params.idStatus;
     city_.idCountry = params.idCountry;
     city_.name = params.name;
     city_.description = params.description;
-    city_.dateCreated = moment().valueOf();
-    city_.dateUpdated = moment().valueOf();
+    city_.dateCreated = dateNow;
+    city_.dateUpdated = dateNow;
     city_.save((err, citySaved) => {
         if (err) {
-            res.status(500).send({ msg: "Error al conectar al servidor", stateRequest: false });
+            res.status(500).send({ data: "Error al conectar al servidor", statusRequest: false });
         } else {
             if (citySaved) {
-                res.status(200).send({ city: citySaved, stateRequest: true });
+                res.status(200).send({ data: citySaved, statusRequest: true });
             } else {
-                res.status(401).send({ msg: "No se pudo registrar la ciudad", stateRequest: false });
+                res.status(401).send({ data: "No se pudo registrar la ciudad", statusRequest: false });
             }
         }
     });
@@ -27,14 +29,30 @@ const addCity = (req, res) => {
 /* ********** START - List all cities method ********** */
 const listCities = (req, res) => {
     let name = req.params["name"];
-    City.find({ name: new RegExp(name, "i") }, (err, dataCity) => {
+    City.find({ name: new RegExp(name, "i") }, (err, dataResponse) => {
         if (err) {
-          res.status(500).send({ msg: "Error al conectar al servidor", stateRequest: false });
+          res.status(500).send({ data: "Error al conectar al servidor", statusRequest: false });
         } else {
-          if (dataCity) {
-            res.status(200).send({ city: dataCity, stateRequest: true });
+          if (dataResponse) {
+            res.status(200).send({ data: dataResponse, statusRequest: true });
           } else {
-            res.status(401).send({ msg: "No existen ciudades", stateRequest: false });
+            res.status(401).send({ data: "No existen ciudades", statusRequest: false });
+          }
+        }
+    });
+};
+/* *********** END - List all cities method *********** */
+/* ********** START - List all cities method ********** */
+const listCityByID = (req, res) => {
+    let id = req.params["id"];
+    City.find({ _id: id }, (err, dataResponse) => {
+        if (err) {
+          res.status(500).send({ data: "Error al conectar al servidor", statusRequest: false });
+        } else {
+          if (dataResponse) {
+            res.status(200).send({ data: dataResponse, statusRequest: true });
+          } else {
+            res.status(401).send({ data: "No existe ciudad", statusRequest: false });
           }
         }
     });
@@ -44,22 +62,23 @@ const listCities = (req, res) => {
 const updateCity = (req, res) => {
     let id = req.params["id"];
     let params = req.body;
+    let dateNow = Utils.getDateNowMilisec();
     City.findByIdAndUpdate(
         { _id: id },
         { 
-            idState: params.idState, 
+            idStatus: params.idStatus, 
             name: params.name, 
             description: params.description, 
             // dateCreated: parseInt(params.dateCreated), 
-            dateUpdated: moment().valueOf(), 
+            dateUpdated: dateNow, 
         }, (err, dataCity) => {
             if (err) {
-                res.status(500).send({ msg: "Error al conectar al servidor", stateRequest: false });
+                res.status(500).send({ data: "Error al conectar al servidor", statusRequest: false });
             } else {
                 if (dataCity) {
-                    res.status(200).send({ city: dataCity, stateRequest: true });
+                    res.status(200).send({ data: dataCity, statusRequest: true });
                 } else {
-                    res.status(403).send({ msg: "La ciudad no se pudo actualizar", stateRequest: false });
+                    res.status(403).send({ data: "La ciudad no se pudo actualizar", statusRequest: false });
                 }
             }
         }
@@ -74,12 +93,12 @@ const deleteCity = (req, res) => {
         { _id: id }, 
         (err, dataCity) => {
             if (err) {
-                res.status(500).send({ msg: "Error al conectar al servidor", stateRequest: false });
+                res.status(500).send({ data: "Error al conectar al servidor", statusRequest: false });
             } else {
                 if (dataCity) {
-                    res.status(200).send({ city: dataCity, stateRequest: true });
+                    res.status(200).send({ data: dataCity, statusRequest: true });
                 } else {
-                    res.status(403).send({ msg: "La ciudad no se pudo eliminar", stateRequest: false });
+                    res.status(403).send({ data: "La ciudad no se pudo eliminar", statusRequest: false });
                 }
             }
         }
@@ -90,6 +109,7 @@ const deleteCity = (req, res) => {
 module.exports = {
     addCity,
     listCities,
+    listCityByID,
     updateCity,
     deleteCity,
 };

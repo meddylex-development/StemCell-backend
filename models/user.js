@@ -4,7 +4,7 @@ let mongoose = require("mongoose");
 let Schema = mongoose.Schema;
 
 let userSchema = Schema({
-    idState: { type: Schema.ObjectId, ref: "state" },
+    idStatus: { type: Schema.ObjectId, ref: "status" },
     idProfile: { type: Schema.ObjectId, ref: "profile" },
     firstName: String,
     secondFirstName: String,

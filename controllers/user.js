@@ -13,7 +13,7 @@ const userSignIn = (req, res) => {
             if (dataUser) {
                 bcrypt.compare(params.password, dataUser.password, (err, successDataCompare) => {
                     if (successDataCompare) {
-                        if (dataUser.idState) {
+                        if (dataUser.idStatus) {
                             if (params.getToken) {
                                 res.status(200).send({ jwt: jwt.createToken(dataUser), user: dataUser });
                             } else {
@@ -37,7 +37,7 @@ const userSignUp = (req, res) => {
     let params = req.body;
     let user_ = new User();
     if (
-        params.idState &&
+        params.idStatus &&
         params.idProfile &&
         params.firstName &&
         params.secondFirstName &&
@@ -55,7 +55,7 @@ const userSignUp = (req, res) => {
     ) {
       bcrypt.hash(params.password, null, null, (err, hash) => {
         if (hash) {
-            user_.idState = params.idState;
+            user_.idStatus = params.idStatus;
             user_.idProfile = params.idProfile;
             user_.firstName = params.firstName;
             user_.secondFirstName = params.secondFirstName;
@@ -91,12 +91,12 @@ const userList = (req, res) => {
     let documentNumber = req.params["documentNumber"];
     User.find({ documentNumber: new RegExp(documentNumber, "i") }, (err, dataUser) => {
         if (err) {
-          res.status(500).send({ msg: "Error al conectar al servidor", stateRequest: false });
+          res.status(500).send({ data: "Error al conectar al servidor", statusRequest: false });
         } else {
           if (dataUser) {
-            res.status(200).send({ user: dataUser, stateRequest: true });
+            res.status(200).send({ user: dataUser, statusRequest: true });
           } else {
-            res.status(401).send({ msg: "No existe el usuario", stateRequest: false });
+            res.status(401).send({ data: "No existe el usuario", statusRequest: false });
           }
         }
     });
@@ -109,7 +109,7 @@ const userUpdate = (req, res) => {
     User.findByIdAndUpdate(
         { _id: id },
         { 
-            idState: params.idState,
+            idStatus: params.idStatus,
             idProfile: params.idProfile,
             firstName: params.firstName,
             secondFirstName: params.secondFirstName,
@@ -127,12 +127,12 @@ const userUpdate = (req, res) => {
             dateUpdated: moment().valueOf(), 
         }, (err, dataUser) => {
             if (err) {
-                res.status(500).send({ msg: "Error al conectar al servidor", stateRequest: false });
+                res.status(500).send({ data: "Error al conectar al servidor", statusRequest: false });
             } else {
                 if (dataUser) {
-                    res.status(200).send({ user: dataUser, stateRequest: true });
+                    res.status(200).send({ user: dataUser, statusRequest: true });
                 } else {
-                    res.status(403).send({ msg: "El usuario no se pudo actualizar", stateRequest: false });
+                    res.status(403).send({ data: "El usuario no se pudo actualizar", statusRequest: false });
                 }
             }
         }
@@ -147,12 +147,12 @@ const deleteUser = (req, res) => {
         { _id: id }, 
         (err, dataUser) => {
             if (err) {
-                res.status(500).send({ msg: "Error al conectar al servidor", stateRequest: false });
+                res.status(500).send({ data: "Error al conectar al servidor", statusRequest: false });
             } else {
                 if (dataUser) {
-                    res.status(200).send({ user: dataUser, stateRequest: true });
+                    res.status(200).send({ user: dataUser, statusRequest: true });
                 } else {
-                    res.status(403).send({ msg: "El usuario no se pudo eliminar", stateRequest: false });
+                    res.status(403).send({ data: "El usuario no se pudo eliminar", statusRequest: false });
                 }
             }
         }
@@ -160,10 +160,28 @@ const deleteUser = (req, res) => {
 };
 /* *********** END - Delete user method *********** */
 
+
+// const createTokenTest = async (req, res) => {
+//     let user = { _id: "123123123" }
+//     let dataToken = await jwt.createToken(user);
+//     console.log('dataToken: ', dataToken);
+//     res.status(200).send({ data: dataToken.data, statusRequest: true });
+// };
+// const verifyTokenTest = async (req, res) => {
+//     console.log("Holaa");
+//     let params = req.params;
+//     console.log('params: ', params);
+//     let dataTest = await jwt.verifyToken(params.token);
+//     console.log('dataTest: ', dataTest);
+//     res.status(200).send({ data: dataTest, statusRequest: true });
+// };
+
 module.exports = {
     userSignIn,
     userSignUp,
     userList,
     userUpdate,
     deleteUser,
+    // createTokenTest,
+    // verifyTokenTest
 };

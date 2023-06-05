@@ -4,7 +4,7 @@ let mongoose = require("mongoose");
 let Schema = mongoose.Schema;
 
 let countrySchema = Schema({
-    idState: { type: Schema.ObjectId, ref: "state" },
+    idStatus: { type: Schema.ObjectId, ref: "status" },
     name: String,
     description: String,
     dateCreated: Number,

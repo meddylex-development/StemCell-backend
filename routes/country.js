@@ -1,11 +1,13 @@
 let express = require("express");
 let Country = require("../controllers/country");
+let Auth = require("../middlewares/auth");
 let api = express.Router();
 
-api.post("/country/add", Country.addCountry);
-api.get("/country/list", Country.listCountries);
-api.post("/country/:name?", Country.listCountries);
-api.put('/country/:id', Country.updateCountry);
-api.delete('/country/:id', Country.deleteCountry);
+api.post("/country", Auth, Country.addCountry);
+api.get("/country", Auth, Country.listCountries);
+api.get("/country/:id?", Auth, Country.listCountryByID);
+api.post("/country/:name?", Auth, Country.listCountries);
+api.put("/country/:id", Auth, Country.updateCountry);
+api.delete("/country/:id", Auth, Country.deleteCountry);
 
 module.exports = api;
