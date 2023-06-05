@@ -12,12 +12,12 @@ const addDocumentType = (req, res) => {
     documentType_.description = params.description;
     documentType_.dateCreated = dateNow;
     documentType_.dateUpdated = dateNow;
-    documentType_.save((err, documentTypeSaved) => {
+    documentType_.save((err, dataResponse) => {
         if (err) {
             res.status(500).send({ data: "Error al conectar al servidor", statusRequest: false });
         } else {
-            if (documentTypeSaved) {
-                res.status(200).send({ data: documentTypeSaved, statusRequest: true });
+            if (dataResponse) {
+                res.status(200).send({ data: dataResponse, statusRequest: true });
             } else {
                 res.status(401).send({ data: "No se pudo registrar el tipo de documento", statusRequest: false });
             }
@@ -28,12 +28,12 @@ const addDocumentType = (req, res) => {
 /* ********** START - List all document type method ********** */
 const listDocumentTypes = (req, res) => {
     let name = req.params["name"];
-    DocumentType.find({ name: new RegExp(name, "i") }, (err, dataDocumentType) => {
+    DocumentType.find({ name: new RegExp(name, "i") }, (err, dataResponse) => {
         if (err) {
           res.status(500).send({ data: "Error al conectar al servidor", statusRequest: false });
         } else {
-          if (dataDocumentType) {
-            res.status(200).send({ data: dataDocumentType, statusRequest: true });
+          if (dataResponse) {
+            res.status(200).send({ data: dataResponse, statusRequest: true });
           } else {
             res.status(401).send({ data: "No existen estados", statusRequest: false });
           }
@@ -46,7 +46,6 @@ const listDocumentTypeByID = (req, res) => {
     let id = req.params["id"];
     console.log('req.params: ', req.params);
     DocumentType.find({ _id: id }, (err, dataResponse) => {
-        console.log('dataResponse: ', dataResponse);
         if (err) {
           res.status(500).send({ data: "Error al conectar al servidor", statusRequest: false });
         } else {
@@ -72,12 +71,12 @@ const updateDocumentType = (req, res) => {
             description: params.description, 
             // dateCreated: parseInt(params.dateCreated), 
             dateUpdated: dateNow, 
-        }, (err, dataDocumentType) => {
+        }, (err, dataResponse) => {
             if (err) {
                 res.status(500).send({ data: "Error al conectar al servidor", statusRequest: false });
             } else {
-                if (dataDocumentType) {
-                    res.status(200).send({ documentType: dataDocumentType, statusRequest: true });
+                if (dataResponse) {
+                    res.status(200).send({ documentType: dataResponse, statusRequest: true });
                 } else {
                     res.status(403).send({ data: "El estado no se pudo actualizar", statusRequest: false });
                 }
@@ -92,12 +91,12 @@ const deleteDocumentType = (req, res) => {
     let params = req.body;
     DocumentType.deleteOne(
         { _id: id }, 
-        (err, dataDocumentType) => {
+        (err, dataResponse) => {
             if (err) {
                 res.status(500).send({ data: "Error al conectar al servidor", statusRequest: false });
             } else {
-                if (dataDocumentType) {
-                    res.status(200).send({ documentType: dataDocumentType, statusRequest: true });
+                if (dataResponse) {
+                    res.status(200).send({ documentType: dataResponse, statusRequest: true });
                 } else {
                     res.status(403).send({ data: "El estado no se pudo eliminar", statusRequest: false });
                 }
@@ -106,6 +105,28 @@ const deleteDocumentType = (req, res) => {
     );
 };
 /* *********** END - Delete document type method *********** */
+/* ********** START - Delete all document types method ********** */
+const deleteAllDocumentTypes = (req, res) => {
+    // let id = req.params["id"];
+    let params = req.body;
+    console.log('params: ', params);
+    return false;
+    DocumentType.deleteMany(
+        {}, 
+        (err, dataResponse) => {
+            if (err) {
+                res.status(500).send({ data: "Error al conectar al servidor", statusRequest: false });
+            } else {
+                if (dataResponse) {
+                    res.status(200).send({ data: dataResponse, statusRequest: true });
+                } else {
+                    res.status(403).send({ data: "No se pudo eliminar los tipos de documento", statusRequest: false });
+                }
+            }
+        }
+    );
+};
+/* *********** END - Delete all document types method *********** */
 
 module.exports = {
     addDocumentType,
@@ -113,4 +134,5 @@ module.exports = {
     listDocumentTypeByID,
     updateDocumentType,
     deleteDocumentType,
+    deleteAllDocumentTypes,
 };

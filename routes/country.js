@@ -9,5 +9,6 @@ api.get("/country/:id?", Auth, Country.listCountryByID);
 api.post("/country/:name?", Auth, Country.listCountries);
 api.put("/country/:id", Auth, Country.updateCountry);
 api.delete("/country/:id", Auth, Country.deleteCountry);
+api.delete("/country", Auth, Country.deleteAllCountries);
 
 module.exports = api;

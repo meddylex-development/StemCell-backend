@@ -14,12 +14,12 @@ const addProfile = (req, res) => {
     profile_.description = params.description;
     profile_.dateCreated = dateNow;
     profile_.dateUpdated = dateNow;
-    profile_.save((err, profileSaved) => {
+    profile_.save((err, dataResponse) => {
         if (err) {
             res.status(500).send({ data: "Error al conectar al servidor", statusRequest: false });
         } else {
-            if (profileSaved) {
-                res.status(200).send({ data: profileSaved, statusRequest: true });
+            if (dataResponse) {
+                res.status(200).send({ data: dataResponse, statusRequest: true });
             } else {
                 res.status(401).send({ data: "No se pudo registrar el perfil", statusRequest: false });
             }
@@ -30,12 +30,12 @@ const addProfile = (req, res) => {
 /* ********** START - List all profiles method ********** */
 const listProfiles = (req, res) => {
     let name = req.params["name"];
-    Profile.find({ name: new RegExp(name, "i") }, (err, dataProfile) => {
+    Profile.find({ name: new RegExp(name, "i") }, (err, dataResponse) => {
         if (err) {
           res.status(500).send({ data: "Error al conectar al servidor", statusRequest: false });
         } else {
-          if (dataProfile) {
-            res.status(200).send({ data: dataProfile, statusRequest: true });
+          if (dataResponse) {
+            res.status(200).send({ data: dataResponse, statusRequest: true });
           } else {
             res.status(401).send({ data: "No existen perfiles", statusRequest: false });
           }
@@ -74,12 +74,12 @@ const updateProfile = (req, res) => {
             description: params.description, 
             // dateCreated: parseInt(params.dateCreated), 
             dateUpdated: dateNow, 
-        }, (err, dataProfile) => {
+        }, (err, dataResponse) => {
             if (err) {
                 res.status(500).send({ data: "Error al conectar al servidor", statusRequest: false });
             } else {
-                if (dataProfile) {
-                    res.status(200).send({ data: dataProfile, statusRequest: true });
+                if (dataResponse) {
+                    res.status(200).send({ data: dataResponse, statusRequest: true });
                 } else {
                     res.status(403).send({ data: "El perfil no se pudo actualizar", statusRequest: false });
                 }
@@ -94,12 +94,12 @@ const deleteProfile = (req, res) => {
     let params = req.body;
     Profile.deleteOne(
         { _id: id }, 
-        (err, dataProfile) => {
+        (err, dataResponse) => {
             if (err) {
                 res.status(500).send({ data: "Error al conectar al servidor", statusRequest: false });
             } else {
-                if (dataProfile) {
-                    res.status(200).send({ data: dataProfile, statusRequest: true });
+                if (dataResponse) {
+                    res.status(200).send({ data: dataResponse, statusRequest: true });
                 } else {
                     res.status(403).send({ data: "El perfil no se pudo eliminar", statusRequest: false });
                 }
@@ -116,12 +116,12 @@ const deleteAllProfiles = (req, res) => {
     return false;
     Profile.deleteMany(
         {}, 
-        (err, dataStatus) => {
+        (err, dataResponse) => {
             if (err) {
                 res.status(500).send({ data: "Error al conectar al servidor", statusRequest: false });
             } else {
-                if (dataStatus) {
-                    res.status(200).send({ data: dataStatus, statusRequest: true });
+                if (dataResponse) {
+                    res.status(200).send({ data: dataResponse, statusRequest: true });
                 } else {
                     res.status(403).send({ data: "No se pudo eliminar los perfiles", statusRequest: false });
                 }

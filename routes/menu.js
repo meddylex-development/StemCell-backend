@@ -9,5 +9,6 @@ api.get("/menu/:id?", Auth, Menu.listMenuByID);
 api.post("/menu/:name?", Auth, Menu.listMenus);
 api.put("/menu/:id", Auth, Menu.updateMenu);
 api.delete("/menu/:id", Auth, Menu.deleteMenu);
+api.delete("/menu", Auth, Menu.deleteAllMenus);
 
 module.exports = api;

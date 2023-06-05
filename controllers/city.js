@@ -13,12 +13,12 @@ const addCity = (req, res) => {
     city_.description = params.description;
     city_.dateCreated = dateNow;
     city_.dateUpdated = dateNow;
-    city_.save((err, citySaved) => {
+    city_.save((err, dataResponse) => {
         if (err) {
             res.status(500).send({ data: "Error al conectar al servidor", statusRequest: false });
         } else {
-            if (citySaved) {
-                res.status(200).send({ data: citySaved, statusRequest: true });
+            if (dataResponse) {
+                res.status(200).send({ data: dataResponse, statusRequest: true });
             } else {
                 res.status(401).send({ data: "No se pudo registrar la ciudad", statusRequest: false });
             }
@@ -71,12 +71,12 @@ const updateCity = (req, res) => {
             description: params.description, 
             // dateCreated: parseInt(params.dateCreated), 
             dateUpdated: dateNow, 
-        }, (err, dataCity) => {
+        }, (err, dataResponse) => {
             if (err) {
                 res.status(500).send({ data: "Error al conectar al servidor", statusRequest: false });
             } else {
-                if (dataCity) {
-                    res.status(200).send({ data: dataCity, statusRequest: true });
+                if (dataResponse) {
+                    res.status(200).send({ data: dataResponse, statusRequest: true });
                 } else {
                     res.status(403).send({ data: "La ciudad no se pudo actualizar", statusRequest: false });
                 }
@@ -91,12 +91,12 @@ const deleteCity = (req, res) => {
     let params = req.body;
     City.deleteOne(
         { _id: id }, 
-        (err, dataCity) => {
+        (err, dataResponse) => {
             if (err) {
                 res.status(500).send({ data: "Error al conectar al servidor", statusRequest: false });
             } else {
-                if (dataCity) {
-                    res.status(200).send({ data: dataCity, statusRequest: true });
+                if (dataResponse) {
+                    res.status(200).send({ data: dataResponse, statusRequest: true });
                 } else {
                     res.status(403).send({ data: "La ciudad no se pudo eliminar", statusRequest: false });
                 }
@@ -105,6 +105,28 @@ const deleteCity = (req, res) => {
     );
 };
 /* *********** END - Delete city method *********** */
+/* ********** START - Delete all cities method ********** */
+const deleteAllCities = (req, res) => {
+    // let id = req.params["id"];
+    let params = req.body;
+    console.log('params: ', params);
+    return false;
+    City.deleteMany(
+        {}, 
+        (err, dataResponse) => {
+            if (err) {
+                res.status(500).send({ data: "Error al conectar al servidor", statusRequest: false });
+            } else {
+                if (dataResponse) {
+                    res.status(200).send({ data: dataResponse, statusRequest: true });
+                } else {
+                    res.status(403).send({ data: "No se pudo eliminar las ciudades", statusRequest: false });
+                }
+            }
+        }
+    );
+};
+/* *********** END - Delete all cities method *********** */
 
 module.exports = {
     addCity,
@@ -112,4 +134,5 @@ module.exports = {
     listCityByID,
     updateCity,
     deleteCity,
+    deleteAllCities,
 };

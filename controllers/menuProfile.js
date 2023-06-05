@@ -12,12 +12,12 @@ const addMenuProfile = (req, res) => {
     menuProfile_.description = params.description;
     menuProfile_.dateCreated = dateNow;
     menuProfile_.dateUpdated = dateNow;
-    menuProfile_.save((err, menuProfile) => {
+    menuProfile_.save((err, dataResponse) => {
         if (err) {
             res.status(500).send({ data: "Error al conectar al servidor", statusRequest: false });
         } else {
-            if (menuProfile) {
-                res.status(200).send({ data: menuProfile, statusRequest: true });
+            if (dataResponse) {
+                res.status(200).send({ data: dataResponse, statusRequest: true });
             } else {
                 res.status(401).send({ data: "No se pudo registrar el menu por perfil", statusRequest: false });
             }
@@ -28,12 +28,12 @@ const addMenuProfile = (req, res) => {
 /* ********** START - List all menu by profile method ********** */
 const listMenuProfiles = (req, res) => {
     let description = req.params["description"];
-    MenuProfile.find({ description: new RegExp(description, "i") }, (err, dataMenuProfile) => {
+    MenuProfile.find({ description: new RegExp(description, "i") }, (err, dataResponse) => {
         if (err) {
           res.status(500).send({ data: "Error al conectar al servidor", statusRequest: false });
         } else {
-          if (dataMenuProfile) {
-            res.status(200).send({ data: dataMenuProfile, statusRequest: true });
+          if (dataResponse) {
+            res.status(200).send({ data: dataResponse, statusRequest: true });
           } else {
             res.status(401).send({ data: "No existen menus por perfil", statusRequest: false });
           }
@@ -72,12 +72,12 @@ const updateMenuProfile = (req, res) => {
             description: params.description, 
             // dateCreated: parseInt(params.dateCreated), 
             dateUpdated: dateNow, 
-        }, (err, dataMenuProfile) => {
+        }, (err, dataResponse) => {
             if (err) {
                 res.status(500).send({ data: "Error al conectar al servidor", statusRequest: false });
             } else {
-                if (dataMenuProfile) {
-                    res.status(200).send({ data: dataMenuProfile, statusRequest: true });
+                if (dataResponse) {
+                    res.status(200).send({ data: dataResponse, statusRequest: true });
                 } else {
                     res.status(403).send({ data: "El menu por perfil no se pudo actualizar", statusRequest: false });
                 }
@@ -92,12 +92,12 @@ const deleteMenuProfile = (req, res) => {
     let params = req.body;
     MenuProfile.deleteOne(
         { _id: id }, 
-        (err, dataMenuProfile) => {
+        (err, dataResponse) => {
             if (err) {
                 res.status(500).send({ data: "Error al conectar al servidor", statusRequest: false });
             } else {
-                if (dataMenuProfile) {
-                    res.status(200).send({ data: dataMenuProfile, statusRequest: true });
+                if (dataResponse) {
+                    res.status(200).send({ data: dataResponse, statusRequest: true });
                 } else {
                     res.status(403).send({ data: "El menu por perfil no se pudo eliminar", statusRequest: false });
                 }
@@ -106,6 +106,28 @@ const deleteMenuProfile = (req, res) => {
     );
 };
 /* *********** END - Delete menu by profile method *********** */
+/* ********** START - Delete all menus by profile method ********** */
+const deleteAllMenusProfile = (req, res) => {
+    // let id = req.params["id"];
+    let params = req.body;
+    console.log('params: ', params);
+    return false;
+    MenuProfile.deleteMany(
+        {}, 
+        (err, dataResponse) => {
+            if (err) {
+                res.status(500).send({ data: "Error al conectar al servidor", statusRequest: false });
+            } else {
+                if (dataResponse) {
+                    res.status(200).send({ data: dataResponse, statusRequest: true });
+                } else {
+                    res.status(403).send({ data: "No se pudo eliminar los menus por perfil", statusRequest: false });
+                }
+            }
+        }
+    );
+};
+/* *********** END - Delete all menus by profile method *********** */
 
 module.exports = {
     addMenuProfile,
@@ -113,4 +135,5 @@ module.exports = {
     listMenuProfileByID,
     updateMenuProfile,
     deleteMenuProfile,
+    deleteAllMenusProfile,
 };
