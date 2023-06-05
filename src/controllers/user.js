@@ -1,9 +1,9 @@
-let User = require("../models/user");
+let moment = require("moment");
 let bcrypt = require("bcrypt-nodejs");
 let jwt = require("../libs/jwt");
-let moment = require("moment");
+let User = require("../models/user");
 
-
+/* ********** START - Sign in user method ********** */
 const userSignIn = (req, res) => {
     let params = req.body;
     User.findOne({ email: params.email }, (err, dataUser) => {
@@ -32,6 +32,7 @@ const userSignIn = (req, res) => {
         }
     });
 };
+/* *********** END - Sign in user method *********** */
 /* ********** START - Add new user method ********** */
 const userSignUp = (req, res) => {
     let params = req.body;

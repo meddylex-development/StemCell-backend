@@ -6,17 +6,17 @@ let port = process.env.PORT || 3001;
 
 let app = express();
 
-let Status = require("./routes/status");
-let Profile = require("./routes/profile");
-let DocumentType = require("./routes/documentType");
-let Menu = require("./routes/menu");
-let MenuProfile = require("./routes/menuProfile");
-let Country = require("./routes/country");
-let City = require("./routes/city");
-let User = require("./routes/user");
-let AuditTrack = require("./routes/auditTrack");
+let Status = require("./src/routes/status");
+let Profile = require("./src/routes/profile");
+let DocumentType = require("./src/routes/documentType");
+let Menu = require("./src/routes/menu");
+let MenuProfile = require("./src/routes/menuProfile");
+let Country = require("./src/routes/country");
+let City = require("./src/routes/city");
+let User = require("./src/routes/user");
+let AuditTrack = require("./src/routes/auditTrack");
 
-let Develop = require("./routes/develop");
+let Develop = require("./src/routes/develop");
 
 app.listen(port, () => {
   console.log("Servidor Backend funcionando en el puerto :", port);
