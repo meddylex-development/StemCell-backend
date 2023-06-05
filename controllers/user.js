@@ -160,10 +160,28 @@ const deleteUser = (req, res) => {
 };
 /* *********** END - Delete user method *********** */
 
+
+// const createTokenTest = async (req, res) => {
+//     let user = { _id: "123123123" }
+//     let dataToken = await jwt.createToken(user);
+//     console.log('dataToken: ', dataToken);
+//     res.status(200).send({ data: dataToken.data, statusRequest: true });
+// };
+// const verifyTokenTest = async (req, res) => {
+//     console.log("Holaa");
+//     let params = req.params;
+//     console.log('params: ', params);
+//     let dataTest = await jwt.verifyToken(params.token);
+//     console.log('dataTest: ', dataTest);
+//     res.status(200).send({ data: dataTest, statusRequest: true });
+// };
+
 module.exports = {
     userSignIn,
     userSignUp,
     userList,
     userUpdate,
     deleteUser,
+    // createTokenTest,
+    // verifyTokenTest
 };

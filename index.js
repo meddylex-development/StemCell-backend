@@ -6,17 +6,20 @@ let port = process.env.PORT || 3001;
 
 let app = express();
 
-let User = require("./routes/user");
-let State = require("./routes/state");
+let Status = require("./routes/status");
 let Profile = require("./routes/profile");
 let DocumentType = require("./routes/documentType");
 let Menu = require("./routes/menu");
+let MenuProfile = require("./routes/menuProfile");
 let Country = require("./routes/country");
 let City = require("./routes/city");
-let MenuProfile = require("./routes/menuProfile");
+let User = require("./routes/user");
 let AuditTrack = require("./routes/auditTrack");
 
+let Develop = require("./routes/develop");
+
 app.listen(port, () => {
+  console.log("Servidor Backend funcionando en el puerto :", port);
 });
 
 mongoose.connect("mongodb://localhost:27017/stemcelldb", {
@@ -26,8 +29,10 @@ mongoose.connect("mongodb://localhost:27017/stemcelldb", {
   useFindAndModify: false,
 })
 .then(() => {
+  console.log("Conexion con MongoDB: ON");
 })
 .catch((err) => {
+  console.log("Conexion con MongoDB: OFF");
 });
 
 // Analizar la codificacion de las url
@@ -46,13 +51,16 @@ app.use((req, res, next) => {
   next();
 });
 
-app.use("/api", User);
-app.use("/api", State);
+app.use("/api", Status);
 app.use("/api", Profile);
 app.use("/api", DocumentType);
 app.use("/api", Menu);
+app.use("/api", MenuProfile);
 app.use("/api", Country);
 app.use("/api", City);
-app.use("/api", MenuProfile);
+app.use("/api", User);
 app.use("/api", AuditTrack);
+
+app.use("/api", Develop);
+
 module.exports = app;

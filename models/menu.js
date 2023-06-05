@@ -4,7 +4,7 @@ let mongoose = require("mongoose");
 let Schema = mongoose.Schema;
 
 let menuSchema = Schema({
-    idState: { type: Schema.ObjectId, ref: "state" },
+    idStatus: { type: Schema.ObjectId, ref: "status" },
     name: String,
     title: String,
     icon: String,
