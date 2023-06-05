@@ -12,12 +12,12 @@ const addCountry = (req, res) => {
     country_.description = params.description;
     country_.dateCreated = dateNow;
     country_.dateUpdated = dateNow;
-    country_.save((err, countrySaved) => {
+    country_.save((err, dataResponse) => {
         if (err) {
             res.status(500).send({ data: "Error al conectar al servidor", statusRequest: false });
         } else {
-            if (countrySaved) {
-                res.status(200).send({ data: countrySaved, statusRequest: true });
+            if (dataResponse) {
+                res.status(200).send({ data: dataResponse, statusRequest: true });
             } else {
                 res.status(401).send({ data: "No se pudo registrar el país", statusRequest: false });
             }
@@ -71,12 +71,12 @@ const updateCountry = (req, res) => {
             description: params.description, 
             // dateCreated: parseInt(params.dateCreated), 
             dateUpdated: dateNow, 
-        }, (err, dataCountry) => {
+        }, (err, dataResponse) => {
             if (err) {
                 res.status(500).send({ data: "Error al conectar al servidor", statusRequest: false });
             } else {
-                if (dataCountry) {
-                    res.status(200).send({ data: dataCountry, statusRequest: true });
+                if (dataResponse) {
+                    res.status(200).send({ data: dataResponse, statusRequest: true });
                 } else {
                     res.status(403).send({ data: "El país no se pudo actualizar", statusRequest: false });
                 }
@@ -91,12 +91,12 @@ const deleteCountry = (req, res) => {
     let params = req.body;
     Country.deleteOne(
         { _id: id }, 
-        (err, dataCountry) => {
+        (err, dataResponse) => {
             if (err) {
                 res.status(500).send({ data: "Error al conectar al servidor", statusRequest: false });
             } else {
-                if (dataCountry) {
-                    res.status(200).send({ data: dataCountry, statusRequest: true });
+                if (dataResponse) {
+                    res.status(200).send({ data: dataResponse, statusRequest: true });
                 } else {
                     res.status(403).send({ data: "El país no se pudo eliminar", statusRequest: false });
                 }
@@ -105,6 +105,28 @@ const deleteCountry = (req, res) => {
     );
 };
 /* *********** END - Delete country method *********** */
+/* ********** START - Delete all countries method ********** */
+const deleteAllCountries = (req, res) => {
+    // let id = req.params["id"];
+    let params = req.body;
+    console.log('params: ', params);
+    return false;
+    Country.deleteMany(
+        {}, 
+        (err, dataResponse) => {
+            if (err) {
+                res.status(500).send({ data: "Error al conectar al servidor", statusRequest: false });
+            } else {
+                if (dataResponse) {
+                    res.status(200).send({ data: dataResponse, statusRequest: true });
+                } else {
+                    res.status(403).send({ data: "No se pudo eliminar las ciudades", statusRequest: false });
+                }
+            }
+        }
+    );
+};
+/* *********** END - Delete all countries method *********** */
 
 module.exports = {
     addCountry,
@@ -112,4 +134,5 @@ module.exports = {
     listCountryByID,
     updateCountry,
     deleteCountry,
+    deleteAllCountries,
 };

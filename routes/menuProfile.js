@@ -9,5 +9,6 @@ api.get("/menu-profile/:id?", Auth, MenuProfile.listMenuProfileByID);
 api.post("/menu-profile/:description?", Auth, MenuProfile.listMenuProfiles);
 api.put("/menu-profile/:id", Auth, MenuProfile.updateMenuProfile);
 api.delete("/menu-profile/:id", Auth, MenuProfile.deleteMenuProfile);
+api.delete("/menu-profile", Auth, MenuProfile.deleteAllMenusProfile);
 
 module.exports = api;

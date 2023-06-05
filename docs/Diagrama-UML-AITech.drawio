@@ -1,0 +1,161 @@
+<mxfile host="65bd71144e">
+    <diagram id="y1vHscILCm9MetW-U-uc" name="Página-1">
+        <mxGraphModel dx="1034" dy="528" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="827" pageHeight="1169" math="0" shadow="0">
+            <root>
+                <mxCell id="0"/>
+                <mxCell id="1" parent="0"/>
+                <mxCell id="29" style="edgeStyle=none;html=1;entryX=-0.001;entryY=0.738;entryDx=0;entryDy=0;fontSize=12;entryPerimeter=0;exitX=1.008;exitY=0.318;exitDx=0;exitDy=0;exitPerimeter=0;" edge="1" parent="1" source="3" target="23">
+                    <mxGeometry relative="1" as="geometry">
+                        <Array as="points">
+                            <mxPoint x="280" y="160"/>
+                            <mxPoint x="280" y="490"/>
+                        </Array>
+                    </mxGeometry>
+                </mxCell>
+                <mxCell id="31" style="edgeStyle=none;html=1;exitX=1;exitY=0.25;exitDx=0;exitDy=0;entryX=-0.004;entryY=0.419;entryDx=0;entryDy=0;entryPerimeter=0;fontSize=12;" edge="1" parent="1" source="3" target="17">
+                    <mxGeometry relative="1" as="geometry"/>
+                </mxCell>
+                <mxCell id="35" style="edgeStyle=none;html=1;entryX=0.578;entryY=-0.004;entryDx=0;entryDy=0;entryPerimeter=0;fontSize=12;" edge="1" parent="1" source="3" target="32">
+                    <mxGeometry relative="1" as="geometry"/>
+                </mxCell>
+                <mxCell id="39" style="edgeStyle=none;html=1;entryX=-0.003;entryY=0.419;entryDx=0;entryDy=0;entryPerimeter=0;fontSize=12;" edge="1" parent="1" source="3" target="36">
+                    <mxGeometry relative="1" as="geometry">
+                        <Array as="points">
+                            <mxPoint x="260" y="240"/>
+                            <mxPoint x="260" y="700"/>
+                        </Array>
+                    </mxGeometry>
+                </mxCell>
+                <mxCell id="43" style="edgeStyle=none;html=1;entryX=0.5;entryY=0;entryDx=0;entryDy=0;fontSize=12;exitX=1.002;exitY=0.613;exitDx=0;exitDy=0;exitPerimeter=0;" edge="1" parent="1" source="3" target="40">
+                    <mxGeometry relative="1" as="geometry">
+                        <Array as="points">
+                            <mxPoint x="520" y="290"/>
+                            <mxPoint x="520" y="380"/>
+                            <mxPoint x="595" y="380"/>
+                        </Array>
+                    </mxGeometry>
+                </mxCell>
+                <mxCell id="3" value="&lt;font style=&quot;font-size: 12px;&quot;&gt;User&lt;br&gt;&lt;br&gt;&lt;div style=&quot;&quot;&gt;&lt;div&gt;&lt;br&gt;&lt;/div&gt;&lt;div style=&quot;text-align: left;&quot;&gt;- idUser: int,&lt;/div&gt;&lt;div style=&quot;text-align: left;&quot;&gt;- idStatus: int,&lt;/div&gt;&lt;div style=&quot;text-align: left;&quot;&gt;- idProfile: int,&lt;/div&gt;&lt;div style=&quot;text-align: left;&quot;&gt;- firstName: string,&lt;/div&gt;&lt;div style=&quot;text-align: left;&quot;&gt;- secondFirstName: string,&lt;/div&gt;&lt;div style=&quot;text-align: left;&quot;&gt;- lastName: string,&lt;/div&gt;&lt;div style=&quot;text-align: left;&quot;&gt;- secondLastName: string,&lt;/div&gt;&lt;div style=&quot;text-align: left;&quot;&gt;- idDocumentType: int,&lt;/div&gt;&lt;div style=&quot;text-align: left;&quot;&gt;- idCountry: int,&lt;/div&gt;&lt;div style=&quot;text-align: left;&quot;&gt;- idCity: int,&lt;/div&gt;&lt;div style=&quot;text-align: left;&quot;&gt;- documentNumber: string,&lt;/div&gt;&lt;div style=&quot;text-align: left;&quot;&gt;- email: string,&lt;/div&gt;&lt;div style=&quot;text-align: left;&quot;&gt;- password: string,&lt;/div&gt;&lt;div style=&quot;text-align: left;&quot;&gt;- address: string,&lt;/div&gt;&lt;div style=&quot;text-align: left;&quot;&gt;- phoneNumber: string,&lt;/div&gt;&lt;div style=&quot;text-align: left;&quot;&gt;- birthDate: int,&lt;/div&gt;&lt;div style=&quot;text-align: left;&quot;&gt;- dateCreated: int,&lt;/div&gt;&lt;div style=&quot;text-align: left;&quot;&gt;- dateUpdated: int,&lt;/div&gt;&lt;/div&gt;&lt;/font&gt;&lt;div style=&quot;text-align: left;&quot;&gt;&lt;br&gt;&lt;/div&gt;&lt;div style=&quot;text-align: left;&quot;&gt;&lt;span style=&quot;background-color: initial;&quot;&gt;&lt;br&gt;&lt;/span&gt;&lt;/div&gt;&lt;div style=&quot;text-align: left;&quot;&gt;&lt;span style=&quot;background-color: initial;&quot;&gt;- createUser()&lt;/span&gt;&lt;br&gt;&lt;/div&gt;&lt;div style=&quot;text-align: left;&quot;&gt;- updateUser()&lt;/div&gt;&lt;div style=&quot;text-align: left;&quot;&gt;- getAllUsers()&lt;/div&gt;&lt;div style=&quot;text-align: left;&quot;&gt;- getUserById()&lt;/div&gt;&lt;div style=&quot;text-align: left;&quot;&gt;- getUserFilter()&lt;/div&gt;&lt;div style=&quot;text-align: left;&quot;&gt;- deleteUser()&lt;/div&gt;" style="rounded=1;whiteSpace=wrap;html=1;arcSize=7;verticalAlign=top;" vertex="1" parent="1">
+                    <mxGeometry x="20" y="20" width="210" height="440" as="geometry"/>
+                </mxCell>
+                <mxCell id="5" value="" style="endArrow=none;html=1;entryX=1;entryY=0.25;entryDx=0;entryDy=0;exitX=0;exitY=0.25;exitDx=0;exitDy=0;" edge="1" parent="1">
+                    <mxGeometry width="50" height="50" relative="1" as="geometry">
+                        <mxPoint x="20" y="56.5" as="sourcePoint"/>
+                        <mxPoint x="230" y="56.5" as="targetPoint"/>
+                        <Array as="points">
+                            <mxPoint x="110" y="57"/>
+                        </Array>
+                    </mxGeometry>
+                </mxCell>
+                <mxCell id="7" value="" style="line;strokeWidth=2;html=1;fontSize=16;" vertex="1" parent="1">
+                    <mxGeometry x="20" y="343" width="210" height="10" as="geometry"/>
+                </mxCell>
+                <mxCell id="17" value="Status&lt;br&gt;&lt;br&gt;&lt;br&gt;&lt;div style=&quot;text-align: left;&quot;&gt;- idStatus: int,&lt;/div&gt;&lt;div style=&quot;text-align: left;&quot;&gt;- name: String,&lt;/div&gt;&lt;div style=&quot;text-align: left;&quot;&gt;- description: String,&lt;/div&gt;&lt;div style=&quot;text-align: left;&quot;&gt;- dateCreated: int,&lt;/div&gt;&lt;div style=&quot;text-align: left;&quot;&gt;- dateUpdated: int,&lt;/div&gt;&lt;div style=&quot;text-align: left;&quot;&gt;&lt;br&gt;&lt;/div&gt;&lt;div style=&quot;text-align: left;&quot;&gt;&lt;br&gt;&lt;/div&gt;&lt;div style=&quot;text-align: left;&quot;&gt;- createStatus()&lt;/div&gt;&lt;div style=&quot;text-align: left;&quot;&gt;- updateStatus()&lt;/div&gt;&lt;div style=&quot;text-align: left;&quot;&gt;&lt;div&gt;- getListStatus()&lt;/div&gt;&lt;div&gt;- getStatusById()&lt;/div&gt;&lt;div&gt;- getStatusFilter()&lt;/div&gt;&lt;div&gt;- deleteStatus()&lt;/div&gt;&lt;/div&gt;" style="rounded=1;whiteSpace=wrap;html=1;fontSize=12;arcSize=9;" vertex="1" parent="1">
+                    <mxGeometry x="320" y="20" width="150" height="260" as="geometry"/>
+                </mxCell>
+                <mxCell id="18" value="" style="endArrow=none;html=1;" edge="1" parent="1">
+                    <mxGeometry width="50" height="50" relative="1" as="geometry">
+                        <mxPoint x="320" y="63" as="sourcePoint"/>
+                        <mxPoint x="470" y="63" as="targetPoint"/>
+                        <Array as="points">
+                            <mxPoint x="403" y="63.5"/>
+                        </Array>
+                    </mxGeometry>
+                </mxCell>
+                <mxCell id="19" value="" style="endArrow=none;html=1;" edge="1" parent="1">
+                    <mxGeometry width="50" height="50" relative="1" as="geometry">
+                        <mxPoint x="320" y="165" as="sourcePoint"/>
+                        <mxPoint x="470" y="165" as="targetPoint"/>
+                        <Array as="points">
+                            <mxPoint x="403" y="165.5"/>
+                        </Array>
+                    </mxGeometry>
+                </mxCell>
+                <mxCell id="23" value="Profile&lt;br&gt;&lt;br&gt;&lt;br&gt;&lt;div style=&quot;text-align: left;&quot;&gt;- idProfile: int,&lt;/div&gt;&lt;div style=&quot;text-align: left;&quot;&gt;- name: String,&lt;/div&gt;&lt;div style=&quot;text-align: left;&quot;&gt;- description: String,&lt;/div&gt;&lt;div style=&quot;text-align: left;&quot;&gt;- dateCreated: int,&lt;/div&gt;&lt;div style=&quot;text-align: left;&quot;&gt;- dateUpdated: int,&lt;/div&gt;&lt;div style=&quot;text-align: left;&quot;&gt;&lt;br&gt;&lt;/div&gt;&lt;div style=&quot;text-align: left;&quot;&gt;&lt;br&gt;&lt;/div&gt;&lt;div style=&quot;text-align: left;&quot;&gt;- createProfile()&lt;/div&gt;&lt;div style=&quot;text-align: left;&quot;&gt;- updateProfile()&lt;/div&gt;&lt;div style=&quot;text-align: left;&quot;&gt;&lt;div&gt;- getListProfile()&lt;/div&gt;&lt;div&gt;- getProfileById()&lt;/div&gt;&lt;div&gt;- getProfileFilter()&lt;/div&gt;&lt;div&gt;- deleteProfile()&lt;/div&gt;&lt;/div&gt;" style="rounded=1;whiteSpace=wrap;html=1;fontSize=12;arcSize=9;" vertex="1" parent="1">
+                    <mxGeometry x="319" y="300" width="150" height="260" as="geometry"/>
+                </mxCell>
+                <mxCell id="24" value="" style="endArrow=none;html=1;" edge="1" parent="1">
+                    <mxGeometry width="50" height="50" relative="1" as="geometry">
+                        <mxPoint x="319" y="342.9999999999999" as="sourcePoint"/>
+                        <mxPoint x="469" y="342.9999999999999" as="targetPoint"/>
+                        <Array as="points">
+                            <mxPoint x="402" y="343.5"/>
+                        </Array>
+                    </mxGeometry>
+                </mxCell>
+                <mxCell id="25" value="" style="endArrow=none;html=1;" edge="1" parent="1">
+                    <mxGeometry width="50" height="50" relative="1" as="geometry">
+                        <mxPoint x="319" y="444" as="sourcePoint"/>
+                        <mxPoint x="469" y="444" as="targetPoint"/>
+                        <Array as="points">
+                            <mxPoint x="402" y="444.5"/>
+                        </Array>
+                    </mxGeometry>
+                </mxCell>
+                <mxCell id="32" value="DocumentType&lt;br&gt;&lt;br&gt;&lt;br&gt;&lt;div style=&quot;text-align: left;&quot;&gt;- idDocumentType: int,&lt;/div&gt;&lt;div style=&quot;text-align: left;&quot;&gt;- name: String,&lt;/div&gt;&lt;div style=&quot;text-align: left;&quot;&gt;- description: String,&lt;/div&gt;&lt;div style=&quot;text-align: left;&quot;&gt;- dateCreated: int,&lt;/div&gt;&lt;div style=&quot;text-align: left;&quot;&gt;- dateUpdated: int,&lt;/div&gt;&lt;div style=&quot;text-align: left;&quot;&gt;&lt;br&gt;&lt;/div&gt;&lt;div style=&quot;text-align: left;&quot;&gt;&lt;br&gt;&lt;/div&gt;&lt;div style=&quot;text-align: left;&quot;&gt;- createDocumentType()&lt;/div&gt;&lt;div style=&quot;text-align: left;&quot;&gt;- updateDocumentType()&lt;/div&gt;&lt;div style=&quot;text-align: left;&quot;&gt;&lt;div&gt;- getListDocumentType()&lt;/div&gt;&lt;div&gt;- getDocumentTypeById()&lt;/div&gt;&lt;div&gt;- getDocumentTypeFilter()&lt;/div&gt;&lt;div&gt;- deleteDocumentType()&lt;/div&gt;&lt;/div&gt;" style="rounded=1;whiteSpace=wrap;html=1;fontSize=12;arcSize=9;" vertex="1" parent="1">
+                    <mxGeometry x="20" y="520" width="180" height="260" as="geometry"/>
+                </mxCell>
+                <mxCell id="33" value="" style="endArrow=none;html=1;entryX=1;entryY=0.165;entryDx=0;entryDy=0;entryPerimeter=0;" edge="1" parent="1" target="32">
+                    <mxGeometry width="50" height="50" relative="1" as="geometry">
+                        <mxPoint x="20" y="562.9999999999999" as="sourcePoint"/>
+                        <mxPoint x="170" y="562.9999999999999" as="targetPoint"/>
+                        <Array as="points">
+                            <mxPoint x="103" y="563.5"/>
+                        </Array>
+                    </mxGeometry>
+                </mxCell>
+                <mxCell id="34" value="" style="endArrow=none;html=1;" edge="1" parent="1">
+                    <mxGeometry width="50" height="50" relative="1" as="geometry">
+                        <mxPoint x="20" y="664" as="sourcePoint"/>
+                        <mxPoint x="200" y="665" as="targetPoint"/>
+                        <Array as="points">
+                            <mxPoint x="103" y="664.5"/>
+                        </Array>
+                    </mxGeometry>
+                </mxCell>
+                <mxCell id="36" value="Country&lt;br&gt;&lt;br&gt;&lt;br&gt;&lt;div style=&quot;text-align: left;&quot;&gt;- idCountry: int,&lt;/div&gt;&lt;div style=&quot;text-align: left;&quot;&gt;- name: String,&lt;/div&gt;&lt;div style=&quot;text-align: left;&quot;&gt;- description: String,&lt;/div&gt;&lt;div style=&quot;text-align: left;&quot;&gt;- dateCreated: int,&lt;/div&gt;&lt;div style=&quot;text-align: left;&quot;&gt;- dateUpdated: int,&lt;/div&gt;&lt;div style=&quot;text-align: left;&quot;&gt;&lt;br&gt;&lt;/div&gt;&lt;div style=&quot;text-align: left;&quot;&gt;&lt;br&gt;&lt;/div&gt;&lt;div style=&quot;text-align: left;&quot;&gt;- createCountry()&lt;/div&gt;&lt;div style=&quot;text-align: left;&quot;&gt;- updateCountry()&lt;/div&gt;&lt;div style=&quot;text-align: left;&quot;&gt;&lt;div&gt;- getListCountry()&lt;/div&gt;&lt;div&gt;- getCountryById()&lt;/div&gt;&lt;div&gt;- getCountryFilter()&lt;/div&gt;&lt;div&gt;- deleteCountry()&lt;/div&gt;&lt;/div&gt;" style="rounded=1;whiteSpace=wrap;html=1;fontSize=12;arcSize=9;" vertex="1" parent="1">
+                    <mxGeometry x="319" y="590" width="150" height="260" as="geometry"/>
+                </mxCell>
+                <mxCell id="37" value="" style="endArrow=none;html=1;" edge="1" parent="1">
+                    <mxGeometry width="50" height="50" relative="1" as="geometry">
+                        <mxPoint x="319" y="632.9999999999999" as="sourcePoint"/>
+                        <mxPoint x="469" y="632.9999999999999" as="targetPoint"/>
+                        <Array as="points">
+                            <mxPoint x="402" y="633.5"/>
+                        </Array>
+                    </mxGeometry>
+                </mxCell>
+                <mxCell id="38" value="" style="endArrow=none;html=1;" edge="1" parent="1">
+                    <mxGeometry width="50" height="50" relative="1" as="geometry">
+                        <mxPoint x="319" y="734" as="sourcePoint"/>
+                        <mxPoint x="469" y="734" as="targetPoint"/>
+                        <Array as="points">
+                            <mxPoint x="402" y="734.5"/>
+                        </Array>
+                    </mxGeometry>
+                </mxCell>
+                <mxCell id="40" value="City&lt;br&gt;&lt;br&gt;&lt;br&gt;&lt;div style=&quot;text-align: left;&quot;&gt;- idCity: int,&lt;/div&gt;&lt;div style=&quot;text-align: left;&quot;&gt;- name: String,&lt;/div&gt;&lt;div style=&quot;text-align: left;&quot;&gt;- description: String,&lt;/div&gt;&lt;div style=&quot;text-align: left;&quot;&gt;- dateCreated: int,&lt;/div&gt;&lt;div style=&quot;text-align: left;&quot;&gt;- dateUpdated: int,&lt;/div&gt;&lt;div style=&quot;text-align: left;&quot;&gt;&lt;br&gt;&lt;/div&gt;&lt;div style=&quot;text-align: left;&quot;&gt;&lt;br&gt;&lt;/div&gt;&lt;div style=&quot;text-align: left;&quot;&gt;- createCountry()&lt;/div&gt;&lt;div style=&quot;text-align: left;&quot;&gt;- updateCountry()&lt;/div&gt;&lt;div style=&quot;text-align: left;&quot;&gt;&lt;div&gt;- getListCountry()&lt;/div&gt;&lt;div&gt;- getCountryById()&lt;/div&gt;&lt;div&gt;- getCountryFilter()&lt;/div&gt;&lt;div&gt;- deleteCountry()&lt;/div&gt;&lt;/div&gt;" style="rounded=1;whiteSpace=wrap;html=1;fontSize=12;arcSize=9;" vertex="1" parent="1">
+                    <mxGeometry x="520" y="455" width="150" height="260" as="geometry"/>
+                </mxCell>
+                <mxCell id="41" value="" style="endArrow=none;html=1;" edge="1" parent="1">
+                    <mxGeometry width="50" height="50" relative="1" as="geometry">
+                        <mxPoint x="520" y="497.9999999999999" as="sourcePoint"/>
+                        <mxPoint x="670" y="497.9999999999999" as="targetPoint"/>
+                        <Array as="points">
+                            <mxPoint x="603" y="498.5"/>
+                        </Array>
+                    </mxGeometry>
+                </mxCell>
+                <mxCell id="42" value="" style="endArrow=none;html=1;" edge="1" parent="1">
+                    <mxGeometry width="50" height="50" relative="1" as="geometry">
+                        <mxPoint x="520" y="599" as="sourcePoint"/>
+                        <mxPoint x="670" y="599" as="targetPoint"/>
+                        <Array as="points">
+                            <mxPoint x="603" y="599.5"/>
+                        </Array>
+                    </mxGeometry>
+                </mxCell>
+            </root>
+        </mxGraphModel>
+    </diagram>
+</mxfile>

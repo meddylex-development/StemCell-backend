@@ -9,5 +9,6 @@ api.get("/city/:id?", Auth, City.listCityByID);
 api.post("/city/:name?", Auth, City.listCities);
 api.put("/city/:id", Auth, City.updateCity);
 api.delete("/city/:id", Auth, City.deleteCity);
+api.delete("/city", Auth, City.deleteAllCities);
 
 module.exports = api;

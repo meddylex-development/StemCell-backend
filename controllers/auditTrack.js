@@ -13,12 +13,12 @@ const addAuditTrack = (req, res) => {
     auditTrack_.description = params.description;
     auditTrack_.dateCreated = dateNow;
     auditTrack_.dateUpdated = dateNow;
-    auditTrack_.save((err, auditTrackSaved) => {
+    auditTrack_.save((err, dataResponse) => {
         if (err) {
             res.status(500).send({ data: "Error al conectar al servidor", statusRequest: false });
         } else {
-            if (auditTrackSaved) {
-                res.status(200).send({ data: auditTrackSaved, statusRequest: true });
+            if (dataResponse) {
+                res.status(200).send({ data: dataResponse, statusRequest: true });
             } else {
                 res.status(401).send({ data: "No se pudo registrar la accion de auditoria", statusRequest: false });
             }
@@ -29,12 +29,12 @@ const addAuditTrack = (req, res) => {
 /* ********** START - List all track actions method ********** */
 const listAuditTrack = (req, res) => {
     let description = req.params["description"];
-    AuditTrack.find({ description: new RegExp(description, "i") }, (err, dataAuditTrack) => {
+    AuditTrack.find({ description: new RegExp(description, "i") }, (err, dataResponse) => {
         if (err) {
           res.status(500).send({ data: "Error al conectar al servidor", statusRequest: false });
         } else {
-          if (dataAuditTrack) {
-            res.status(200).send({ data: dataAuditTrack, statusRequest: true });
+          if (dataResponse) {
+            res.status(200).send({ data: dataResponse, statusRequest: true });
           } else {
             res.status(401).send({ data: "No existen registros de auditoria", statusRequest: false });
           }
@@ -72,12 +72,12 @@ const updateAuditTrack = (req, res) => {
             description: params.description,
             // dateCreated: parseInt(params.dateCreated), 
             dateUpdated: dateNow, 
-        }, (err, dataAuditTrack) => {
+        }, (err, dataResponse) => {
             if (err) {
                 res.status(500).send({ data: "Error al conectar al servidor", statusRequest: false });
             } else {
-                if (dataAuditTrack) {
-                    res.status(200).send({ data: dataAuditTrack, statusRequest: true });
+                if (dataResponse) {
+                    res.status(200).send({ data: dataResponse, statusRequest: true });
                 } else {
                     res.status(403).send({ data: "El estado no se pudo actualizar", statusRequest: false });
                 }
@@ -92,12 +92,12 @@ const deleteAuditTrack = (req, res) => {
     let params = req.body;
     AuditTrack.deleteOne(
         { _id: id }, 
-        (err, dataAuditTrack) => {
+        (err, dataResponse) => {
             if (err) {
                 res.status(500).send({ data: "Error al conectar al servidor", statusRequest: false });
             } else {
-                if (dataAuditTrack) {
-                    res.status(200).send({ data: dataAuditTrack, statusRequest: true });
+                if (dataResponse) {
+                    res.status(200).send({ data: dataResponse, statusRequest: true });
                 } else {
                     res.status(403).send({ data: "El registro de auditoria no se pudo eliminar", statusRequest: false });
                 }
@@ -106,19 +106,20 @@ const deleteAuditTrack = (req, res) => {
     );
 };
 /* *********** END - Delete audit track action method *********** */
-/* ********** START - Delete all status method ********** */
+/* ********** START - Delete all audit track method ********** */
 const deleteAllAuditTrack = (req, res) => {
     // let id = req.params["id"];
     let params = req.body;
     console.log('params: ', params);
+    return false;
     AuditTrack.deleteMany(
         {}, 
-        (err, dataAuditTrack) => {
+        (err, dataResponse) => {
             if (err) {
                 res.status(500).send({ data: "Error al conectar al servidor", statusRequest: false });
             } else {
-                if (dataAuditTrack) {
-                    res.status(200).send({ data: dataAuditTrack, statusRequest: true });
+                if (dataResponse) {
+                    res.status(200).send({ data: dataResponse, statusRequest: true });
                 } else {
                     res.status(403).send({ data: "No se pudo eliminar los estados", statusRequest: false });
                 }
@@ -126,7 +127,7 @@ const deleteAllAuditTrack = (req, res) => {
         }
     );
 };
-/* *********** END - Delete all status method *********** */
+/* *********** END - Delete all audit track method *********** */
 
 module.exports = {
     addAuditTrack,

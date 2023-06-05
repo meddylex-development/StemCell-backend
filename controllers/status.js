@@ -11,12 +11,12 @@ const addStatus = async (req, res) => {
     status_.description = params.description;
     status_.dateCreated = dateNow;
     status_.dateUpdated = dateNow;
-    status_.save((err, statusSaved) => {
+    status_.save((err, dataResponse) => {
         if (err) {
             res.status(500).send({ data: "Error al conectar al servidor", statusRequest: false });
         } else {
-            if (statusSaved) {
-                res.status(200).send({ data: statusSaved, statusRequest: true });
+            if (dataResponse) {
+                res.status(200).send({ data: dataResponse, statusRequest: true });
             } else {
                 res.status(401).send({ data: "No se pudo registrar el estado", statusRequest: false });
             }
@@ -30,12 +30,12 @@ const listStatus = async (req, res) => {
 
     let name = req.params["name"];
     // console.log('req.params: ', req.params);
-    Status.find({ name: new RegExp(name, "i") }, (err, dataStatus) => {
+    Status.find({ name: new RegExp(name, "i") }, (err, dataResponse) => {
         if (err) {
           res.status(500).send({ data: "Error al conectar al servidor", statusRequest: false });
         } else {
-          if (dataStatus) {
-            res.status(200).send({ data: dataStatus, statusRequest: true });
+          if (dataResponse) {
+            res.status(200).send({ data: dataResponse, statusRequest: true });
           } else {
             res.status(401).send({ data: "No existen estados", statusRequest: false });
           }
@@ -73,12 +73,12 @@ const updateStatus = (req, res) => {
             description: params.description, 
             // dateCreated: parseInt(params.dateCreated), 
             dateUpdated: dateNow, 
-        }, (err, dataStatus) => {
+        }, (err, dataResponse) => {
             if (err) {
                 res.status(500).send({ data: "Error al conectar al servidor", statusRequest: false });
             } else {
-                if (dataStatus) {
-                    res.status(200).send({ data: dataStatus, statusRequest: true });
+                if (dataResponse) {
+                    res.status(200).send({ data: dataResponse, statusRequest: true });
                 } else {
                     res.status(403).send({ data: "El estado no se pudo actualizar", statusRequest: false });
                 }
@@ -94,12 +94,12 @@ const deleteStatus = (req, res) => {
     // let params = req.body;
     Status.deleteOne(
         { _id: id }, 
-        (err, dataStatus) => {
+        (err, dataResponse) => {
             if (err) {
                 res.status(500).send({ data: "Error al conectar al servidor", statusRequest: false });
             } else {
-                if (dataStatus) {
-                    res.status(200).send({ data: dataStatus, statusRequest: true });
+                if (dataResponse) {
+                    res.status(200).send({ data: dataResponse, statusRequest: true });
                 } else {
                     res.status(403).send({ data: "El estado no se pudo eliminar", statusRequest: false });
                 }
@@ -116,12 +116,12 @@ const deleteAllStatus = (req, res) => {
     return false;
     Status.deleteMany(
         {}, 
-        (err, dataStatus) => {
+        (err, dataResponse) => {
             if (err) {
                 res.status(500).send({ data: "Error al conectar al servidor", statusRequest: false });
             } else {
-                if (dataStatus) {
-                    res.status(200).send({ data: dataStatus, statusRequest: true });
+                if (dataResponse) {
+                    res.status(200).send({ data: dataResponse, statusRequest: true });
                 } else {
                     res.status(403).send({ data: "No se pudo eliminar los estados", statusRequest: false });
                 }
