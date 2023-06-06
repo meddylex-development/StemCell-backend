@@ -1,41 +1,12 @@
 let moment = require("moment");
 let bcrypt = require("bcrypt-nodejs");
-let jwt = require("../libs/jwt");
 let User = require("../models/user");
+let Utils = require("../utils/utils");
 
-/* ********** START - Sign in user method ********** */
-const userSignIn = (req, res) => {
-    let params = req.body;
-    User.findOne({ email: params.email }, (err, dataUser) => {
-        if (err) {
-            res.status(500).send({ mensaje: "Error del servidor" });
-        } else {
-            if (dataUser) {
-                bcrypt.compare(params.password, dataUser.password, (err, successDataCompare) => {
-                    if (successDataCompare) {
-                        if (dataUser.idStatus) {
-                            if (params.getToken) {
-                                res.status(200).send({ jwt: jwt.createToken(dataUser), user: dataUser });
-                            } else {
-                                res.status(200).send({ user: dataUser, mensaje: "Sin token" });
-                            }
-                        } else {
-                            res.status(206).send({ user: dataUser, mensaje: "Usuario Inactivo" });
-                        }
-                    } else {
-                        res.status(401).send({ mensaje: "Correo o Clave erronea" });
-                    }
-                });
-            } else {
-                res.status(401).send({ mensaje: "Correo o Clave erronea" });
-            }
-        }
-    });
-};
-/* *********** END - Sign in user method *********** */
 /* ********** START - Add new user method ********** */
-const userSignUp = (req, res) => {
+const addNewUser = async (req, res) => {
     let params = req.body;
+    let dateNow = Utils.getDateNowMilisec();
     let user_ = new User();
     if (
         params.idStatus &&
@@ -71,31 +42,34 @@ const userSignUp = (req, res) => {
             user_.address = params.address;
             user_.phoneNumber = params.phoneNumber;
             user_.birthDate = params.birthDate;
-            user_.dateCreated = moment().unix();
-            user_.dateUpdated = moment().unix();
-            user_.save((err, userSaved) => {
+            user_.dateCreated = dateNow;
+            user_.dateUpdated = dateNow;
+            user_.save((err, dataResponse) => {
                 if (err) {
-                    res.status(500).send({ err: "No se registro el usuario", state: false });
+                    res.status(500).send({ data: "No se registro el usuario", statusRequest: false });
                 } else {
-                    res.status(200).send({ user: userSaved, state: true });
+                    res.status(200).send({ data: dataResponse, statusRequest: true });
                 }
             });
         }
       });
     } else {
-        res.status(405).send({ err: "No se guardo un dato" });
+        res.status(405).send({ data: "No se guardo un dato", statusRequest: false });
     }
+
 };
 /* *********** END - Add new user method *********** */
 /* ********** START - List all users method ********** */
-const userList = (req, res) => {
+const listUsers = (req, res) => {
     let documentNumber = req.params["documentNumber"];
-    User.find({ documentNumber: new RegExp(documentNumber, "i") }, (err, dataUser) => {
+    console.log('documentNumber: ', documentNumber);
+    User.find({ documentNumber: new RegExp(documentNumber, "i") }, (err, dataResponse) => {
+        console.log('dataResponse: ', dataResponse);
         if (err) {
           res.status(500).send({ data: "Error al conectar al servidor", statusRequest: false });
         } else {
-          if (dataUser) {
-            res.status(200).send({ user: dataUser, statusRequest: true });
+          if (dataResponse) {
+            res.status(200).send({ data: dataResponse, statusRequest: true });
           } else {
             res.status(401).send({ data: "No existe el usuario", statusRequest: false });
           }
@@ -103,10 +77,29 @@ const userList = (req, res) => {
     });
 };
 /* *********** END - List all users method *********** */
+/* ********** START - List user by id method ********** */
+const listUserByID = (req, res) => {
+    let id = req.params["id"];
+    console.log('req.params: ', req.params);
+    User.find({ _id: id }, (err, dataResponse) => {
+        console.log('dataResponse: ', dataResponse);
+        if (err) {
+          res.status(500).send({ data: "Error al conectar al servidor", statusRequest: false });
+        } else {
+          if (dataResponse) {
+            res.status(200).send({ data: dataResponse, statusRequest: true });
+          } else {
+            res.status(401).send({ data: "No existe el usuario", statusRequest: false });
+          }
+        }
+    });
+};
+/* *********** END - List user by id method *********** */
 /* ********** START - Update user method ********** */
-const userUpdate = (req, res) => {
+const updateUser = (req, res) => {
     let id = req.params["id"];
     let params = req.body;
+    let dateNow = Utils.getDateNowMilisec();
     User.findByIdAndUpdate(
         { _id: id },
         { 
@@ -125,13 +118,13 @@ const userUpdate = (req, res) => {
             phoneNumber: params.phoneNumber,
             birthDate: params.birthDate,
             // dateCreated: parseInt(params.dateCreated), 
-            dateUpdated: moment().valueOf(), 
-        }, (err, dataUser) => {
+            dateUpdated: dateNow, 
+        }, (err, dataResponse) => {
             if (err) {
                 res.status(500).send({ data: "Error al conectar al servidor", statusRequest: false });
             } else {
-                if (dataUser) {
-                    res.status(200).send({ user: dataUser, statusRequest: true });
+                if (dataResponse) {
+                    res.status(200).send({ data: dataResponse, statusRequest: true });
                 } else {
                     res.status(403).send({ data: "El usuario no se pudo actualizar", statusRequest: false });
                 }
@@ -146,12 +139,12 @@ const deleteUser = (req, res) => {
     let params = req.body;
     User.deleteOne(
         { _id: id }, 
-        (err, dataUser) => {
+        (err, dataResponse) => {
             if (err) {
                 res.status(500).send({ data: "Error al conectar al servidor", statusRequest: false });
             } else {
-                if (dataUser) {
-                    res.status(200).send({ user: dataUser, statusRequest: true });
+                if (dataResponse) {
+                    res.status(200).send({ data: dataResponse, statusRequest: true });
                 } else {
                     res.status(403).send({ data: "El usuario no se pudo eliminar", statusRequest: false });
                 }
@@ -160,11 +153,34 @@ const deleteUser = (req, res) => {
     );
 };
 /* *********** END - Delete user method *********** */
+/* ********** START - Delete all status method ********** */
+const deleteAllUsers = (req, res) => {
+    // let id = req.params["id"];
+    let params = req.body;
+    console.log('params: ', params);
+    return false;
+    User.deleteMany(
+        {}, 
+        (err, dataResponse) => {
+            if (err) {
+                res.status(500).send({ data: "Error al conectar al servidor", statusRequest: false });
+            } else {
+                if (dataResponse) {
+                    res.status(200).send({ data: dataResponse, statusRequest: true });
+                } else {
+                    res.status(403).send({ data: "No se pudo eliminar los usuarios", statusRequest: false });
+                }
+            }
+        }
+    );
+};
+/* *********** END - Delete all status method *********** */
 
 module.exports = {
-    userSignIn,
-    userSignUp,
-    userList,
-    userUpdate,
+    addNewUser,
+    listUsers,
+    listUserByID,
+    updateUser,
     deleteUser,
+    deleteAllUsers,
 };
