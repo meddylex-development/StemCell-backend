@@ -1,6 +1,7 @@
 let express = require("express");
 let bodyParser = require("body-parser");
 let mongoose = require("mongoose");
+let path = require("path");
 
 let port = process.env.PORT || 3001;
 
@@ -14,9 +15,57 @@ let MenuProfile = require("./src/routes/menuProfile");
 let Country = require("./src/routes/country");
 let City = require("./src/routes/city");
 let User = require("./src/routes/user");
+let Auth = require("./src/routes/auth");
 let AuditTrack = require("./src/routes/auditTrack");
 
 let Develop = require("./src/routes/develop");
+
+// Swagger
+const swaggerUI = require("swagger-ui-express");
+const swaggerJsDoc = require("swagger-jsdoc");
+const swaggerSpec = {
+  definition: {
+    openapi: "3.0.3", // present supported openapi version
+    info: {
+      version: "1.0.0", // version number
+      title: "Celula madre backend API", // short title.
+      description: "Esta es una descripcion de la API", //  desc.
+      summary: "Este es un resumen de la API",
+      // contact: {
+      //   name: "John doe", // your name
+      //   email: "john@web.com", // your email
+      //   url: "web.com", // your website
+      // },
+    },
+    components: {
+      securitySchemes: {
+          bearerAuth: {
+              type: 'http',
+              scheme: 'bearer',
+              bearerFormat: 'JWT',
+          }
+      }
+    },
+    security: [{
+      bearerAuth: []
+    }],
+    servers: [
+      {
+        "url": "http://localhost:3001",
+        "description": "Development server"
+      },
+      // {
+      //   "url": "http://localhost:9000",
+      //   "description": "Staging server"
+      // },
+      // {
+      //   "url": "http://localhost:9000",
+      //   "description": "Production server"
+      // }
+    ]
+  },
+  apis: [`${ path.join(__dirname, "./src/routes/*.js") }`]
+};
 
 app.listen(port, () => {
   console.log("Servidor Backend funcionando en el puerto :", port);
@@ -59,8 +108,9 @@ app.use("/api", MenuProfile);
 app.use("/api", Country);
 app.use("/api", City);
 app.use("/api", User);
+app.use("/api", Auth);
 app.use("/api", AuditTrack);
-
 app.use("/api", Develop);
+app.use("/", swaggerUI.serve, swaggerUI.setup(swaggerJsDoc(swaggerSpec)));
 
 module.exports = app;
