@@ -44,7 +44,6 @@ const listDocumentTypes = (req, res) => {
 /* ********** START - List document type by id method ********** */
 const listDocumentTypeByID = (req, res) => {
     let id = req.params["id"];
-    console.log('req.params: ', req.params);
     DocumentType.find({ _id: id }, (err, dataResponse) => {
         if (err) {
           res.status(500).send({ data: "Error al conectar al servidor", statusRequest: false });

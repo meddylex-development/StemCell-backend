@@ -44,9 +44,7 @@ const listMenuProfiles = (req, res) => {
 /* ********** START - List menu by id method ********** */
 const listMenuProfileByID = (req, res) => {
     let id = req.params["id"];
-    console.log('req.params: ', req.params);
     MenuProfile.find({ _id: id }, (err, dataResponse) => {
-        console.log('dataResponse: ', dataResponse);
         if (err) {
           res.status(500).send({ data: "Error al conectar al servidor", statusRequest: false });
         } else {

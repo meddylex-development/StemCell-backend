@@ -62,9 +62,7 @@ const addNewUser = async (req, res) => {
 /* ********** START - List all users method ********** */
 const listUsers = (req, res) => {
     let documentNumber = req.params["documentNumber"];
-    console.log('documentNumber: ', documentNumber);
     User.find({ documentNumber: new RegExp(documentNumber, "i") }, (err, dataResponse) => {
-        console.log('dataResponse: ', dataResponse);
         if (err) {
           res.status(500).send({ data: "Error al conectar al servidor", statusRequest: false });
         } else {
@@ -80,9 +78,7 @@ const listUsers = (req, res) => {
 /* ********** START - List user by id method ********** */
 const listUserByID = (req, res) => {
     let id = req.params["id"];
-    console.log('req.params: ', req.params);
     User.find({ _id: id }, (err, dataResponse) => {
-        console.log('dataResponse: ', dataResponse);
         if (err) {
           res.status(500).send({ data: "Error al conectar al servidor", statusRequest: false });
         } else {

@@ -32,9 +32,7 @@ const addMenu = (req, res) => {
 /* ********** START - List all menus method ********** */
 const listMenus = (req, res) => {
     let name = req.params["name"];
-    // console.log('name: ', name);
     Menu.find({ name: new RegExp(name, "i") }, (err, dataResponse) => {
-        // console.log('dataResponse: ', dataResponse);
         if (err) {
           res.status(500).send({ data: "Error al conectar al servidor", statusRequest: false });
         } else {
@@ -50,9 +48,7 @@ const listMenus = (req, res) => {
 /* ********** START - List menu by id method ********** */
 const listMenuByID = (req, res) => {
     let id = req.params["id"];
-    // console.log('req.params: ', req.params);
     Menu.find({ _id: id }, (err, dataResponse) => {
-        // console.log('dataResponse: ', dataResponse);
         if (err) {
           res.status(500).send({ data: "Error al conectar al servidor", statusRequest: false });
         } else {

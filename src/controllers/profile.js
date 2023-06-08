@@ -5,8 +5,6 @@ let Utils = require("../utils/utils");
 /* ********** START - Add new profile method ********** */
 const addProfile = (req, res) => {
     let params = req.body;
-    // console.log('params: ', params);
-    // return false
     let dateNow = Utils.getDateNowMilisec();
     let profile_ = new Profile();
     profile_.idStatus = params.idStatus;
@@ -46,9 +44,7 @@ const listProfiles = (req, res) => {
 /* ********** START - List profile by id method ********** */
 const listProfileByID = (req, res) => {
     let id = req.params["id"];
-    console.log('req.params: ', req.params);
     Profile.find({ _id: id }, (err, dataResponse) => {
-        console.log('dataResponse: ', dataResponse);
         if (err) {
           res.status(500).send({ data: "Error al conectar al servidor", statusRequest: false });
         } else {
