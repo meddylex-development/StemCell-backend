@@ -44,7 +44,6 @@ const listCountries = (req, res) => {
 /* ********** START - List all states method ********** */
 const listCountryByID = (req, res) => {
     let id = req.params["id"];
-    console.log('req.params: ', req.params);
     Country.find({ _id: id }, (err, dataResponse) => {
         if (err) {
           res.status(500).send({ data: "Error al conectar al servidor", statusRequest: false });

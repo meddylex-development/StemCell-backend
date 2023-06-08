@@ -29,7 +29,6 @@ const addStatus = async (req, res) => {
 const listStatus = async (req, res) => {
 
     let name = req.params["name"];
-    // console.log('req.params: ', req.params);
     Status.find({ name: new RegExp(name, "i") }, (err, dataResponse) => {
         if (err) {
           res.status(500).send({ data: "Error al conectar al servidor", statusRequest: false });
@@ -46,9 +45,7 @@ const listStatus = async (req, res) => {
 /* ********** START - List status by id method ********** */
 const listStatusByID = (req, res) => {
     let id = req.params["id"];
-    console.log('req.params: ', req.params);
     Status.find({ _id: id }, (err, dataResponse) => {
-        console.log('dataResponse: ', dataResponse);
         if (err) {
           res.status(500).send({ data: "Error al conectar al servidor", statusRequest: false });
         } else {
@@ -90,7 +87,6 @@ const updateStatus = (req, res) => {
 /* ********** START - Delete status method ********** */
 const deleteStatus = (req, res) => {
     let id = req.params["id"];
-    console.log('id: ', id);
     // let params = req.body;
     Status.deleteOne(
         { _id: id }, 
