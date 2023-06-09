@@ -1,4 +1,5 @@
 let moment = require("moment");
+let File = require("../models/file");
 let Utils = require("../utils/utils");
 
 // Importamos modulo node para el control de ficheros
@@ -45,12 +46,13 @@ const uploadFile = async (req, res) => {
     console.log('params: ', params);
     let files = req.files;
     console.log('files: ', files);
+    
     let dateNow = Utils.getDateNowMilisec();
     console.log('dateNow: ', dateNow);
-
+    
     let imagePath = req.files.file.path;
     console.log('imagePath: ', imagePath); // Borrar despues de probar
-
+    
     // Generamos codigo consecutivo con fecha para el nombre de las imagenes
     let fileName = dateNow;
     console.log('fileName: ', fileName);
@@ -59,17 +61,37 @@ const uploadFile = async (req, res) => {
     let fileExtension = path.extname(imagePath);
     console.log('fileExtension: ', fileExtension);
 
-    // Creamos variable de la nueva ruta
-    // let routeServer = path.join(__dirname, '../..', 'assets/uploads/' + fileName + fileExtension);
-    // console.log('routeServer: ', routeServer); // Borrar despues de probar
-    
-    let saveFile = await Utils.uploadFile(imagePath, 'assets/uploads/', fileName, fileExtension);
-    console.log('saveFile: ', saveFile);
-    
-    if (!saveFile.statusRequest) {
+    const savedFile = await Utils.storageFile(imagePath, 'assets/uploads/temp/', files.file.originalFilename);
+    console.log('savedFile: ', savedFile);
+
+    if (!savedFile.statusRequest) {
         res.status(500).send({ data: "Error al cargar la imagen", statusRequest: false });
     } else {
-        res.status(200).send({ data: saveFile.urlFile, fileName: `${ fileName }`, fileExtension: fileExtension, statusRequest: true });
+        // res.status(200).send({ data: savedFile.urlFile, fileName: `${ fileName }`, fileExtension: fileExtension, statusRequest: true });
+
+        const file_ = new File({
+            idStatus: "647a73a6d47ece6731a4d979",
+            name: files.file.originalFilename,
+            name: files.file.originalFilename,
+            extension: fileExtension,
+            location: savedFile.urlFile,
+            size: files.file.size,
+            description: "Imagen de prueba",
+            dateCreated: dateNow,
+            dateUpdated: dateNow,
+        });
+        await file_.save((err, dataResponse) => {
+            if (err) {
+                res.status(500).send({ data: "Error al conectar al servidor", statusRequest: false });
+            } else {
+                if (dataResponse) {
+                    res.status(200).send({ data: dataResponse, statusRequest: true });
+                } else {
+                    res.status(401).send({ data: "No se pudo registrar la direccion", statusRequest: false });
+                }
+            }
+        });
+
     }
     
 };
@@ -144,10 +166,69 @@ const uploadAndReadExcelFile = async (req, res) => {
     
 };
 /* *********** END - Lee un archivo de excel *********** */
+/* ********** START - Carga un archivo, lo convierte a blob y luego lo almacena en el servidor ********** */
+const uploadFileAndSaveBlob = async (req, res) => {
+    let files = req.files;
+    console.log('files: ', files);
+    
+    let dateNow = Utils.getDateNowMilisec();
+    console.log('dateNow: ', dateNow);
+    
+    let imagePath = req.files.file.path;
+    console.log('imagePath: ', imagePath); // Borrar despues de probar
+
+    let fileExtension = path.extname(imagePath);
+    console.log('fileExtension: ', fileExtension);
+
+    const uuidNameFile = Utils.getUUID();
+    console.log('uuidNameFile: ', uuidNameFile);
+    // const blobPath = `../../assets/uploads/blob/${uuidNameFile}.blob`; // Ruta de almacenamiento en el servidor
+    
+    let blobPath = path.join(__dirname, '../..', 'assets/uploads/blob/' + uuidNameFile + '.blob');
+    console.log('blobPath: ', blobPath);
+    
+
+    fs.rename(imagePath, blobPath, async (error) => {
+        if (error) {
+          console.error(error);
+          res.status(500).json({ error: 'Error al cargar el archivo' });
+        } else {
+
+            const file_ = new File({
+                idStatus: "647a73a6d47ece6731a4d979",
+                name: uuidNameFile,
+                originalName: files.file.originalFilename,
+                extension: fileExtension,
+                location: blobPath,
+                size: files.file.size,
+                description: "Archivo blob " + uuidNameFile,
+                dateCreated: dateNow,
+                dateUpdated: dateNow,
+            });
+            await file_.save((err, dataResponse) => {
+                if (err) {
+                    res.status(500).send({ data: "Error al conectar al servidor", statusRequest: false });
+                } else {
+                    if (dataResponse) {
+                        res.status(200).send({ data: dataResponse, statusRequest: true });
+                    } else {
+                        res.status(401).send({ data: "No se pudo registrar la direccion", statusRequest: false });
+                    }
+                }
+            });
+
+
+            // res.json({ message: 'Archivo cargado correctamente', fileId });
+        }
+    });
+
+};
+/* *********** END - Carga un archivo, lo convierte a blob y luego lo almacena en el servidor *********** */
 
 module.exports = {
     getNewToken,
     uploadFile,
     readExcelFile,
     uploadAndReadExcelFile,
+    uploadFileAndSaveBlob,
 };

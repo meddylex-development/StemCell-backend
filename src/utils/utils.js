@@ -7,6 +7,8 @@ let fs = require("fs");
 let path = require("path");
 // Importamos modulo para usar con archivos xls
 const xlsReader = require('xlsx');
+const crypto = require('crypto');
+
 
 const verifyToken = (payload) => {
 
@@ -82,6 +84,11 @@ const getDateFormat = (timestamp = '', format = '') => {
     return moment(timestamp).format(formatDate);
 }
 
+const getUUID = () => {
+    let UUID = crypto.randomUUID();
+    return UUID;
+}
+
 const uploadFile = (temporalPath, pathServer, fileName, fileExtension) => {
     return new Promise((resolve, reject) => {
         if (!pathServer) {
@@ -140,14 +147,47 @@ const readXlsFile = (pathFile, isStoreBuffer = false) => {
     });
 };
 
+const storageFile = (temporalPath, pathServer, fileName) => {
+    return new Promise((resolve, reject) => {
+        if (!pathServer) {
+            reject({ data: new Error("No se definio la ruta del archivo"), statusRequest: false });
+        } else {
+            let imagePath = temporalPath;
+            let routeServer = path.join(__dirname, '../..', pathServer + fileName);
+            fs.createReadStream(imagePath).pipe(fs.createWriteStream(routeServer));
+            resolve({ urlFile: routeServer, statusRequest: true });
+        }
+    });
+};
 
+const getFileStorage = (filename) => {
+    const filePath = path.join(__dirname, '../../assets/uploads/blob/', filename);
+    return fs.createReadStream(filePath);
+};
+
+function fileToBlob(filePath) {
+    return new Promise((resolve, reject) => {
+      fs.readFile(filePath, (error, data) => {
+        if (error) {
+          reject(error);
+        } else {
+          const blob = new Blob([data], { type: 'application/octet-stream' });
+          resolve(blob);
+        }
+      });
+    });
+}
 
 module.exports = {
     createToken,
     verifyToken,
     getDateNowMilisec,
     getDateFormat,
+    getUUID,
     uploadFile,
     readFile,
     readXlsFile,
+    storageFile,
+    getFileStorage,
+    fileToBlob,
 };

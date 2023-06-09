@@ -6,6 +6,7 @@ let Schema = mongoose.Schema;
 let fileSchema = Schema({
     idStatus: { type: Schema.ObjectId, ref: "status" },
     name: String,
+    originalName: String,
     extension: String,
     location: String,
     size: Number,

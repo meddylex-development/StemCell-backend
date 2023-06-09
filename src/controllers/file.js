@@ -9,6 +9,7 @@ const addFile = (req, res) => {
     let file_ = new File();
     file_.idStatus = params.idStatus;
     file_.name = params.name;
+    file_.originalName = params.originalName;
     file_.extension = params.extension;
     file_.location = params.location;
     file_.size = params.size;
@@ -70,6 +71,7 @@ const updateFile = (req, res) => {
         { 
             idStatus: params.idStatus,
             name: params.name,
+            originalName: params.originalName,
             extension: params.extension,
             location: params.location,
             size: params.size,

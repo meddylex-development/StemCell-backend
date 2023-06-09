@@ -15,7 +15,10 @@ let api = express.Router();
  *                  description: ID del estado en el cual quedara la el archivo
  *              name: 
  *                  type: string
- *                  description: nombre del archivo
+ *                  description: nombre del archivo blob
+ *              originalName: 
+ *                  type: string
+ *                  description: nombre del archivo original
  *              extension: 
  *                  type: string
  *                  description: extension del archivo
@@ -31,6 +34,7 @@ let api = express.Router();
  *          required:
  *              - idStatus
  *              - name
+ *              - originalName
  *              - extension
  *              - location
  *              - size
@@ -38,11 +42,12 @@ let api = express.Router();
  *              - description
  *          example:
  *              idStatus: 647a73a6d47ece6731a4d979
- *              name: Foto de perfil
+ *              name: 230add2a-ac86-4b1c-837c-0d6b8ffcd6f2
+ *              originalName: Libro-excel.xsls
  *              extension: jpg
  *              location: "../../assets/files/uploads"
  *              size: 12.345
- *              description: Es la foto de perfil del usurio en sesion
+ *              description: Archivo de excel con informacion de ...
  */
 /**
  * @swagger
