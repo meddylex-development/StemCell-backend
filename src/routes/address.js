@@ -1,5 +1,5 @@
 let express = require("express");
-let MenuProfile = require("../controllers/menuProfile");
+let Address = require("../controllers/address");
 let Auth = require("../middlewares/auth");
 let api = express.Router();
 
@@ -7,55 +7,61 @@ let api = express.Router();
  * @swagger
  * components:
  *  schemas:
- *      MenuProfile:
+ *      Address:
  *          type: Object
  *          properties: 
- *              idProfile:
- *                  type: string
- *                  description: ID del perfil al cual esta asociado el menú
- *              idMenu:
- *                  type: string
- *                  description: ID del menu
  *              idStatus:
  *                  type: string
- *                  description: ID del estado
+ *                  description: ID del estado en el cual quedara la direccion
+ *              idCountry:
+ *                  type: string
+ *                  description: ID del pais de la direccion
+ *              idCity:
+ *                  type: string
+ *                  description: ID de la ciudad la direccion
+ *              name: 
+ *                  type: string
+ *                  description: nombre de la direccion
  *              description:
  *                  type: string
- *                  description: Descripcion de la asociacion menu - perfil
+ *                  description: Descripcion de la direccion
  *          required:
- *              - idProfile
- *              - idMenu
  *              - idStatus
+ *              - idCountry
+ *              - idCity
+ *              - name
+ *              - name:
  *              - description
  *          example:
- *              idProfile: 6478d2e4ea2a65bf339e75f0
- *              idMenu: 6478e2982bdb19d7626a5f5d
- *              idStatus: 6478e2982bdb19d7b7jry678h
- *              description: Perfil de usuarios del sistema
+ *              idStatus: 647a73a6d47ece6731a4d979
+ *              idCountry: 7456j456h456i4k57456p64k5
+ *              idCity: i543i4034y34r34e3t454y35
+ *              name: Direccion de usuario
+ *              description: Es la direccion de usuario que el registro en el formulario de registro
  */
 /**
  * @swagger
- * /api/menu-profile:
+ * /api/address:
  *  post:
- *      summary: Crea una nueva asociasion menú - perfil
- *      tags: [MenuProfile]
+ *      summary: Crea una nueva direccion
+ *      tags: [Address]
  *      requestBody: 
  *          required: true
  *          content: 
  *              application/json:
  *                  schema:
  *                      type: Object
- *                      $ref: '#/components/schemas/MenuProfile'
+ *                      $ref: '#/components/schemas/Address'
  *      responses:
  *          200: 
- *            description: New status created   
+ *            description: New address created   
  */
 /**
  * @swagger
- * /api/menu-profile:
+ * /api/address:
  *  get:
- *      summary: Obtiene una lista con todas las asociasiones de menú - perfil
- *      tags: [MenuProfile]
+ *      summary: Obtiene una lista con todas las direcciones
+ *      tags: [Address]
  *      description: "The endpoint returns a simple json object"
  *      produces:
  *          -application/json
@@ -71,17 +77,17 @@ let api = express.Router();
  */
 /**
  * @swagger
- * /api/menu-profile/{id}:
+ * /api/address/{id}:
  *  get:
- *      summary: Obtiene informacion de asociasion menú - perfil por su ID
- *      tags: [MenuProfile]
+ *      summary: Obtiene informacion de una direccion por su ID
+ *      tags: [Address]
  *      description: "The endpoint returns a simple json object"
  *      produces:
  *          - application/json
  *      parameters:
  *          - in: path
  *            name: id
- *            description: ID del menú - perfil
+ *            description: ID de la direccion
  *      responses:
  *          200:
  *              description: "Success"
@@ -94,17 +100,17 @@ let api = express.Router();
  */
 /**
  * @swagger
- * /api/menu-profile/{description}:
+ * /api/address/{name}:
  *  post:
- *      summary: Obtiene una lista de asociasiones menú - perfil por descripcion
- *      tags: [MenuProfile]
+ *      summary: Obtiene una lista de direcciones por nombre
+ *      tags: [Address]
  *      description: "The endpoint returns a simple json object"
  *      produces:
  *          - application/json
  *      parameters:
  *          - in: path
- *            name: description
- *            description: Descripcion de la asociacion menú - perfil
+ *            name: name
+ *            description: Nombre de la direccion
  *      responses:
  *          200:
  *              description: "Success"
@@ -117,24 +123,24 @@ let api = express.Router();
  */
 /**
  * @swagger
- * /api/menu-profile/{id}:
+ * /api/address/{id}:
  *  put:
- *      summary: Actualiza un menú - perfil por su ID
- *      tags: [MenuProfile]
+ *      summary: Actualiza una direccion por su ID
+ *      tags: [Address]
  *      requestBody: 
  *          required: true
  *          content: 
  *              application/json:
  *                  schema:
  *                      type: Object
- *                      $ref: '#/components/schemas/MenuProfile'
+ *                      $ref: '#/components/schemas/Address'
  *      description: "The endpoint returns a simple json object"
  *      produces:
  *          - application/json
  *      parameters:
  *          - in: path
  *            name: id
- *            description: ID del menú - perfil
+ *            description: ID de la direccion
  *      responses:
  *          200:
  *              description: "Success"
@@ -147,17 +153,17 @@ let api = express.Router();
  */
 /**
  * @swagger
- * /api/menu-profile/{id}:
+ * /api/address/{id}:
  *  delete:
- *      summary: Elimina un menú - perfil por su ID
- *      tags: [MenuProfile]
+ *      summary: Elimina una direccion por su ID
+ *      tags: [Address]
  *      description: "The endpoint returns a simple json object"
  *      produces:
  *          - application/json
  *      parameters:
  *          - in: path
  *            name: id
- *            description: ID del menú - perfil
+ *            description: ID de la direccion
  *      responses:
  *          200:
  *              description: "Success"
@@ -170,10 +176,10 @@ let api = express.Router();
  */
 /**
  * @swagger
- * /api/menu-profile:
+ * /api/address:
  *  delete:
- *      summary: Elimina todos los menus - perfil 
- *      tags: [MenuProfile]
+ *      summary: Elimina todas las direcciones
+ *      tags: [Address]
  *      description: "The endpoint returns a simple json object"
  *      produces:
  *          -application/json
@@ -188,13 +194,12 @@ let api = express.Router();
  *                       "message": "Hello there"  
  */
 
-
-api.post("/menu-profile", Auth, MenuProfile.addMenuProfile);
-api.get("/menu-profile", Auth, MenuProfile.listMenuProfiles);
-api.get("/menu-profile/:id?", Auth, MenuProfile.listMenuProfileByID);
-api.post("/menu-profile/:description?", Auth, MenuProfile.listMenuProfiles);
-api.put("/menu-profile/:id", Auth, MenuProfile.updateMenuProfile);
-api.delete("/menu-profile/:id", Auth, MenuProfile.deleteMenuProfile);
-api.delete("/menu-profile", Auth, MenuProfile.deleteAllMenusProfile);
+api.post("/address", Auth, Address.addAddress);
+api.get("/address", Auth, Address.listAddress);
+api.get("/address/:id?", Auth, Address.listAddressByID);
+api.post("/address/:name?", Auth, Address.listAddress);
+api.put('/address/:id', Auth, Address.updateAddress);
+api.delete('/address/:id', Auth, Address.deleteAddress);
+api.delete("/address", Auth, Address.deleteAllAddress);
 
 module.exports = api;

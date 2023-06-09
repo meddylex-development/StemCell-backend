@@ -3,13 +3,14 @@ let mongoose = require("mongoose");
 // metodo que permite crear esquemas desde node/express
 let Schema = mongoose.Schema;
 
-let menuProfileSchema = Schema({
-    idProfile: { type: Schema.ObjectId, ref: "profile" },
-    idMenu: { type: Schema.ObjectId, ref: "menu" },
+let addressSchema = Schema({
     idStatus: { type: Schema.ObjectId, ref: "status" },
+    idCountry: { type: Schema.ObjectId, ref: "country" },
+    idCity: { type: Schema.ObjectId, ref: "city" },
+    name: String,
     description: String,
     dateCreated: Number,
     dateUpdated: Number,
 });
 
-module.exports = mongoose.model("menuProfile", menuProfileSchema);
+module.exports = mongoose.model("address", addressSchema);

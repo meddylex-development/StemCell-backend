@@ -4,20 +4,23 @@ let User = require("../models/user");
 let Utils = require("../utils/utils");
 
 /* ********** START - Add new user method ********** */
-const addNewUser = async (req, res) => {
+const addUser = async (req, res) => {
     let params = req.body;
     let dateNow = Utils.getDateNowMilisec();
     let user_ = new User();
     if (
         params.idStatus &&
         params.idProfile &&
+        params.idDocumentType && 
+        params.idCountry && 
+        params.idCity && 
+        params.idLanguage && 
+        params.idFile && 
+        params.idAddress && 
         params.firstName &&
         params.secondFirstName &&
         params.lastName &&
         params.secondLastName &&
-        params.idDocumentType && 
-        params.idCountry && 
-        params.idCity && 
         params.documentNumber &&
         params.email &&
         params.password &&
@@ -29,13 +32,16 @@ const addNewUser = async (req, res) => {
         if (hash) {
             user_.idStatus = params.idStatus;
             user_.idProfile = params.idProfile;
+            user_.idDocumentType = params.idDocumentType;
+            user_.idCountry = params.idCountry;
+            user_.idCity = params.idCity;
+            user_.idLanguage = params.idLanguage;
+            user_.idFile = params.idFile;
+            user_.idAddress = params.idAddress;
             user_.firstName = params.firstName;
             user_.secondFirstName = params.secondFirstName;
             user_.lastName = params.lastName;
             user_.secondLastName = params.secondLastName;
-            user_.idDocumentType = params.idDocumentType;
-            user_.idCountry = params.idCountry;
-            user_.idCity = params.idCity;
             user_.documentNumber = params.documentNumber;
             user_.email = params.email;
             user_.password = hash;
@@ -60,7 +66,7 @@ const addNewUser = async (req, res) => {
 };
 /* *********** END - Add new user method *********** */
 /* ********** START - List all users method ********** */
-const listUsers = (req, res) => {
+const listUser = (req, res) => {
     let documentNumber = req.params["documentNumber"];
     User.find({ documentNumber: new RegExp(documentNumber, "i") }, (err, dataResponse) => {
         if (err) {
@@ -101,13 +107,16 @@ const updateUser = (req, res) => {
         { 
             idStatus: params.idStatus,
             idProfile: params.idProfile,
+            idDocumentType: params.idDocumentType,
+            idCountry: params.idCountry,
+            idCity: params.idCity,
+            idLanguage: params.idLanguage,
+            idFile: params.idFile,
+            idAddress: params.idAddress,
             firstName: params.firstName,
             secondFirstName: params.secondFirstName,
             lastName: params.lastName,
             secondLastName: params.secondLastName,
-            idDocumentType: params.idDocumentType,
-            idCountry: params.idCountry,
-            idCity: params.idCity,
             documentNumber: params.documentNumber,
             email: params.email,
             address: params.address,
@@ -150,7 +159,7 @@ const deleteUser = (req, res) => {
 };
 /* *********** END - Delete user method *********** */
 /* ********** START - Delete all status method ********** */
-const deleteAllUsers = (req, res) => {
+const deleteAllUser = (req, res) => {
     // let id = req.params["id"];
     let params = req.body;
     console.log('params: ', params);
@@ -173,10 +182,10 @@ const deleteAllUsers = (req, res) => {
 /* *********** END - Delete all status method *********** */
 
 module.exports = {
-    addNewUser,
-    listUsers,
+    addUser,
+    listUser,
     listUserByID,
     updateUser,
     deleteUser,
-    deleteAllUsers,
+    deleteAllUser,
 };

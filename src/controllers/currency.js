@@ -1,74 +1,74 @@
 let moment = require("moment");
-let MenuProfile = require("../models/menuProfile");
+let Currency = require("../models/currency");
 let Utils = require("../utils/utils");
 
-/* ********** START - Add new menu by profile method ********** */
-const addMenuProfile = (req, res) => {
+/* ********** START - Add new currency method ********** */
+const addCurrency = (req, res) => { 
     let params = req.body;
     let dateNow = Utils.getDateNowMilisec();
-    let menuProfile_ = new MenuProfile();
-    menuProfile_.idProfile = params.idProfile;
-    menuProfile_.idMenu = params.idMenu;
-    menuProfile_.idStatus = params.idStatus;
-    menuProfile_.description = params.description;
-    menuProfile_.dateCreated = dateNow;
-    menuProfile_.dateUpdated = dateNow;
-    menuProfile_.save((err, dataResponse) => {
+    let currency_ = new Currency();
+    currency_.idStatus = params.idStatus;
+    currency_.idCountry = params.idCountry;
+    currency_.name = params.name;
+    currency_.description = params.description;
+    currency_.dateCreated = dateNow;
+    currency_.dateUpdated = dateNow;
+    currency_.save((err, dataResponse) => {
         if (err) {
             res.status(500).send({ data: "Error al conectar al servidor", statusRequest: false });
         } else {
             if (dataResponse) {
                 res.status(200).send({ data: dataResponse, statusRequest: true });
             } else {
-                res.status(401).send({ data: "No se pudo registrar el menu por perfil", statusRequest: false });
+                res.status(401).send({ data: "No se pudo registrar la moneda", statusRequest: false });
             }
         }
     });
 };
-/* *********** END - Add new menu by profile method *********** */
-/* ********** START - List all menu by profile method ********** */
-const listMenuProfiles = (req, res) => {
-    let description = req.params["description"];
-    MenuProfile.find({ description: new RegExp(description, "i") }, (err, dataResponse) => {
+/* *********** END - Add new currency method *********** */
+/* ********** START - List all currency method ********** */
+const listCurrency = (req, res) => {
+    let name = req.params["name"];
+    Currency.find({ name: new RegExp(name, "i") }, (err, dataResponse) => {
         if (err) {
           res.status(500).send({ data: "Error al conectar al servidor", statusRequest: false });
         } else {
           if (dataResponse) {
             res.status(200).send({ data: dataResponse, statusRequest: true });
           } else {
-            res.status(401).send({ data: "No existen menus por perfil", statusRequest: false });
+            res.status(401).send({ data: "No existen monedas", statusRequest: false });
           }
         }
     });
 };
-/* *********** END - List all menu by profile method *********** */
-/* ********** START - List menu by id method ********** */
-const listMenuProfileByID = (req, res) => {
+/* *********** END - List all currency method *********** */
+/* ********** START - List currency by id method ********** */
+const listCurrencyByID = (req, res) => {
     let id = req.params["id"];
-    MenuProfile.find({ _id: id }, (err, dataResponse) => {
+    Currency.find({ _id: id }, (err, dataResponse) => {
         if (err) {
           res.status(500).send({ data: "Error al conectar al servidor", statusRequest: false });
         } else {
           if (dataResponse) {
             res.status(200).send({ data: dataResponse, statusRequest: true });
           } else {
-            res.status(401).send({ data: "No existe menu por perfil", statusRequest: false });
+            res.status(401).send({ data: "No existen monedas", statusRequest: false });
           }
         }
     });
 };
-/* *********** END - List menu by id method *********** */
-/* ********** START - Update menu by profile method ********** */
-const updateMenuProfile = (req, res) => {
+/* *********** END - List currency by id method *********** */
+/* ********** START - Update currency method ********** */
+const updateCurrency = (req, res) => {
     let id = req.params["id"];
     let params = req.body;
     let dateNow = Utils.getDateNowMilisec();
-    MenuProfile.findByIdAndUpdate(
+    Currency.findByIdAndUpdate(
         { _id: id },
         { 
-            idProfile: params.idProfile, 
-            idMenu: params.idMenu, 
             idStatus: params.idStatus, 
+            idCountry: params.idCountry,
+            name: params.name, 
             description: params.description, 
             // dateCreated: parseInt(params.dateCreated), 
             dateUpdated: dateNow, 
@@ -79,18 +79,18 @@ const updateMenuProfile = (req, res) => {
                 if (dataResponse) {
                     res.status(200).send({ data: dataResponse, statusRequest: true });
                 } else {
-                    res.status(403).send({ data: "El menu por perfil no se pudo actualizar", statusRequest: false });
+                    res.status(403).send({ data: "La moneda no se pudo actualizar", statusRequest: false });
                 }
             }
         }
     );
 };
-/* *********** END - Update menu by profile method *********** */
-/* ********** START - Delete menu by profile method ********** */
-const deleteMenuProfile = (req, res) => {
+/* *********** END - Update currency method *********** */
+/* ********** START - Delete currency method ********** */
+const deleteCurrency = (req, res) => {
     let id = req.params["id"];
     let params = req.body;
-    MenuProfile.deleteOne(
+    Currency.deleteOne(
         { _id: id }, 
         (err, dataResponse) => {
             if (err) {
@@ -99,20 +99,20 @@ const deleteMenuProfile = (req, res) => {
                 if (dataResponse) {
                     res.status(200).send({ data: dataResponse, statusRequest: true });
                 } else {
-                    res.status(403).send({ data: "El menu por perfil no se pudo eliminar", statusRequest: false });
+                    res.status(403).send({ data: "La moneda no se pudo eliminar", statusRequest: false });
                 }
             }
         }
     );
 };
-/* *********** END - Delete menu by profile method *********** */
-/* ********** START - Delete all menus by profile method ********** */
-const deleteAllMenusProfile = (req, res) => {
+/* *********** END - Delete currency method *********** */
+/* ********** START - Delete all currency method ********** */
+const deleteAllCurrency = (req, res) => {
     // let id = req.params["id"];
     let params = req.body;
     console.log('params: ', params);
     return false;
-    MenuProfile.deleteMany(
+    Currency.deleteMany(
         {}, 
         (err, dataResponse) => {
             if (err) {
@@ -121,19 +121,19 @@ const deleteAllMenusProfile = (req, res) => {
                 if (dataResponse) {
                     res.status(200).send({ data: dataResponse, statusRequest: true });
                 } else {
-                    res.status(403).send({ data: "No se pudo eliminar los menus por perfil", statusRequest: false });
+                    res.status(403).send({ data: "No se pudo eliminar las monedas", statusRequest: false });
                 }
             }
         }
     );
 };
-/* *********** END - Delete all menus by profile method *********** */
+/* *********** END - Delete all currency method *********** */
 
 module.exports = {
-    addMenuProfile,
-    listMenuProfiles,
-    listMenuProfileByID,
-    updateMenuProfile,
-    deleteMenuProfile,
-    deleteAllMenusProfile,
+    addCurrency,
+    listCurrency,
+    listCurrencyByID,
+    updateCurrency,
+    deleteCurrency,
+    deleteAllCurrency,
 };

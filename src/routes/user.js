@@ -16,6 +16,24 @@ let api = express.Router();
  *              idProfile: 
  *                  type: string
  *                  description: ID perfil
+ *              idDocumentType: 
+ *                  type: string
+ *                  description: ID del tipo de documento
+ *              idCountry: 
+ *                  type: string
+ *                  description: ID de la ciudad
+ *              idCity: 
+ *                  type: string
+ *                  description: ID del pais
+ *              idLanguage: 
+ *                  type: string
+ *                  description: ID del lenguaje
+ *              idFile: 
+ *                  type: string
+ *                  description: ID de la foto de perfil
+ *              idAddress: 
+ *                  type: string
+ *                  description: ID de la direccion de residencia
  *              firstName: 
  *                  type: string
  *                  description: Primer nombre
@@ -28,15 +46,6 @@ let api = express.Router();
  *              secondLastName: 
  *                  type: string
  *                  description: Segundo apellido
- *              idDocumentType: 
- *                  type: string
- *                  description: ID del tipo de documento
- *              idCountry: 
- *                  type: string
- *                  description: ID de la ciudad
- *              idCity: 
- *                  type: string
- *                  description: ID del pais
  *              documentNumber: 
  *                  type: string
  *                  description: Numero de documento
@@ -58,13 +67,16 @@ let api = express.Router();
  *          required:
  *              - idStatus
  *              - idProfile
+ *              - idDocumentType
+ *              - idCountry
+ *              - idCity
+ *              - idLanguage
+ *              - idFile
+ *              - idAddress
  *              - firstName
  *              - secondFirstName
  *              - lastName
  *              - secondLastName
- *              - idDocumentType
- *              - idCountry
- *              - idCity
  *              - documentNumber
  *              - email
  *              - password
@@ -74,13 +86,16 @@ let api = express.Router();
  *          example:
  *              idStatus: 232fdfw34534grgdf
  *              idProfile: 6f7d7fddgfvdfggf45
+ *              idDocumentType: 12345435nb5345jh34
+ *              idCountry: 345435vhj3453h4534
+ *              idCity: 87v6dfgdgdfg8fdg89gf
+ *              idLanguage: 87v6dfgdgdfg8fdg89gf
+ *              idFile: 87v6dfgdgdfg8fdg89gf
+ *              idAddress: 87v6dfgdgdfg8fdg89gf
  *              firstName: Alex
  *              secondFirstName: Pepe 
  *              lastName: Perez
  *              secondLastName: Rojas
- *              idDocumentType: 12345435nb5345jh34
- *              idCountry: 345435vhj3453h4534
- *              idCity: 87v6dfgdgdfg8fdg89gf
  *              documentNumber: "12323423444"
  *              email: pepe.perez@test.com
  *              password: PepePerez123
@@ -244,12 +259,12 @@ let api = express.Router();
  *                       "message": "Hello there"  
  */
 
-api.post("/user", Auth, User.addNewUser);
-api.get("/user", Auth, User.listUsers);
+api.post("/user", Auth, User.addUser);
+api.get("/user", Auth, User.listUser);
 api.get("/user/:id?", Auth, User.listUserByID);
-api.post("/user/:documentNumber?", Auth, User.listUsers);
+api.post("/user/:documentNumber?", Auth, User.listUser);
 api.put("/user/:id", Auth, User.updateUser);
 api.delete("/user/:id", Auth, User.deleteUser);
-api.delete("/user", Auth, User.deleteAllUsers);
+api.delete("/user", Auth, User.deleteAllUser);
 
 module.exports = api;

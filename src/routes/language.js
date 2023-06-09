@@ -1,5 +1,5 @@
 let express = require("express");
-let MenuProfile = require("../controllers/menuProfile");
+let Language = require("../controllers/language");
 let Auth = require("../middlewares/auth");
 let api = express.Router();
 
@@ -7,55 +7,50 @@ let api = express.Router();
  * @swagger
  * components:
  *  schemas:
- *      MenuProfile:
+ *      Language:
  *          type: Object
  *          properties: 
- *              idProfile:
- *                  type: string
- *                  description: ID del perfil al cual esta asociado el menú
- *              idMenu:
- *                  type: string
- *                  description: ID del menu
  *              idStatus:
  *                  type: string
- *                  description: ID del estado
+ *                  description: ID del estado en el cual quedara el lenguaje
+ *              name: 
+ *                  type: string
+ *                  description: Nombre del lenguaje
  *              description:
  *                  type: string
- *                  description: Descripcion de la asociacion menu - perfil
+ *                  description: Descripcion del lenguaje
  *          required:
- *              - idProfile
- *              - idMenu
  *              - idStatus
+ *              - name
  *              - description
  *          example:
- *              idProfile: 6478d2e4ea2a65bf339e75f0
- *              idMenu: 6478e2982bdb19d7626a5f5d
- *              idStatus: 6478e2982bdb19d7b7jry678h
- *              description: Perfil de usuarios del sistema
+ *              idStatus: 647a73a6d47ece6731a4d979
+ *              name: Español
+ *              description: Idioma Español
  */
 /**
  * @swagger
- * /api/menu-profile:
+ * /api/language:
  *  post:
- *      summary: Crea una nueva asociasion menú - perfil
- *      tags: [MenuProfile]
+ *      summary: Crea un nuevo lenguaje
+ *      tags: [Language]
  *      requestBody: 
  *          required: true
  *          content: 
  *              application/json:
  *                  schema:
  *                      type: Object
- *                      $ref: '#/components/schemas/MenuProfile'
+ *                      $ref: '#/components/schemas/Language'
  *      responses:
  *          200: 
- *            description: New status created   
+ *            description: New language created   
  */
 /**
  * @swagger
- * /api/menu-profile:
+ * /api/language:
  *  get:
- *      summary: Obtiene una lista con todas las asociasiones de menú - perfil
- *      tags: [MenuProfile]
+ *      summary: Obtiene una lista con todos los lenguajes
+ *      tags: [Language]
  *      description: "The endpoint returns a simple json object"
  *      produces:
  *          -application/json
@@ -71,17 +66,17 @@ let api = express.Router();
  */
 /**
  * @swagger
- * /api/menu-profile/{id}:
+ * /api/language/{id}:
  *  get:
- *      summary: Obtiene informacion de asociasion menú - perfil por su ID
- *      tags: [MenuProfile]
+ *      summary: Obtiene informacion del lenguaje por su ID
+ *      tags: [Language]
  *      description: "The endpoint returns a simple json object"
  *      produces:
  *          - application/json
  *      parameters:
  *          - in: path
  *            name: id
- *            description: ID del menú - perfil
+ *            description: ID del lenguaje
  *      responses:
  *          200:
  *              description: "Success"
@@ -94,17 +89,17 @@ let api = express.Router();
  */
 /**
  * @swagger
- * /api/menu-profile/{description}:
+ * /api/language/{name}:
  *  post:
- *      summary: Obtiene una lista de asociasiones menú - perfil por descripcion
- *      tags: [MenuProfile]
+ *      summary: Obtiene una lista de lenguajes por nombre
+ *      tags: [Language]
  *      description: "The endpoint returns a simple json object"
  *      produces:
  *          - application/json
  *      parameters:
  *          - in: path
- *            name: description
- *            description: Descripcion de la asociacion menú - perfil
+ *            name: name
+ *            description: Nombre del lenguaje
  *      responses:
  *          200:
  *              description: "Success"
@@ -117,24 +112,24 @@ let api = express.Router();
  */
 /**
  * @swagger
- * /api/menu-profile/{id}:
+ * /api/language/{id}:
  *  put:
- *      summary: Actualiza un menú - perfil por su ID
- *      tags: [MenuProfile]
+ *      summary: Actualiza un lenguaje por su ID
+ *      tags: [Language]
  *      requestBody: 
  *          required: true
  *          content: 
  *              application/json:
  *                  schema:
  *                      type: Object
- *                      $ref: '#/components/schemas/MenuProfile'
+ *                      $ref: '#/components/schemas/Language'
  *      description: "The endpoint returns a simple json object"
  *      produces:
  *          - application/json
  *      parameters:
  *          - in: path
  *            name: id
- *            description: ID del menú - perfil
+ *            description: Nombre del lenguaje
  *      responses:
  *          200:
  *              description: "Success"
@@ -147,17 +142,17 @@ let api = express.Router();
  */
 /**
  * @swagger
- * /api/menu-profile/{id}:
+ * /api/language/{id}:
  *  delete:
- *      summary: Elimina un menú - perfil por su ID
- *      tags: [MenuProfile]
+ *      summary: Elimina un lenguaje por su ID
+ *      tags: [Language]
  *      description: "The endpoint returns a simple json object"
  *      produces:
  *          - application/json
  *      parameters:
  *          - in: path
  *            name: id
- *            description: ID del menú - perfil
+ *            description: ID del lenguaje
  *      responses:
  *          200:
  *              description: "Success"
@@ -170,10 +165,10 @@ let api = express.Router();
  */
 /**
  * @swagger
- * /api/menu-profile:
+ * /api/language:
  *  delete:
- *      summary: Elimina todos los menus - perfil 
- *      tags: [MenuProfile]
+ *      summary: Elimina todos los lenguajes
+ *      tags: [Language]
  *      description: "The endpoint returns a simple json object"
  *      produces:
  *          -application/json
@@ -188,13 +183,12 @@ let api = express.Router();
  *                       "message": "Hello there"  
  */
 
-
-api.post("/menu-profile", Auth, MenuProfile.addMenuProfile);
-api.get("/menu-profile", Auth, MenuProfile.listMenuProfiles);
-api.get("/menu-profile/:id?", Auth, MenuProfile.listMenuProfileByID);
-api.post("/menu-profile/:description?", Auth, MenuProfile.listMenuProfiles);
-api.put("/menu-profile/:id", Auth, MenuProfile.updateMenuProfile);
-api.delete("/menu-profile/:id", Auth, MenuProfile.deleteMenuProfile);
-api.delete("/menu-profile", Auth, MenuProfile.deleteAllMenusProfile);
+api.post("/language", Auth, Language.addLanguage);
+api.get("/language", Auth, Language.listLanguages);
+api.get("/language/:id?", Auth, Language.listLanguageByID);
+api.post("/language/:name?", Auth, Language.listLanguages);
+api.put('/language/:id', Auth, Language.updateLanguage);
+api.delete('/language/:id', Auth, Language.deleteLanguage);
+api.delete("/language", Auth, Language.deleteAllLanguages);
 
 module.exports = api;

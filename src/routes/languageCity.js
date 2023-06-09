@@ -1,5 +1,5 @@
 let express = require("express");
-let MenuProfile = require("../controllers/menuProfile");
+let LanguageCity = require("../controllers/languageCity");
 let Auth = require("../middlewares/auth");
 let api = express.Router();
 
@@ -7,55 +7,60 @@ let api = express.Router();
  * @swagger
  * components:
  *  schemas:
- *      MenuProfile:
+ *      LanguageCity:
  *          type: Object
  *          properties: 
- *              idProfile:
+ *              idLanguage:
  *                  type: string
- *                  description: ID del perfil al cual esta asociado el menú
- *              idMenu:
- *                  type: string
- *                  description: ID del menu
+ *                  description: ID del lenguaje
  *              idStatus:
  *                  type: string
  *                  description: ID del estado
+ *              idCity:
+ *                  type: string
+ *                  description: ID de la ciudad
+ *              idCountry:
+ *                  type: string
+ *                  description: ID del pais
  *              description:
  *                  type: string
- *                  description: Descripcion de la asociacion menu - perfil
+ *                  description: Descripcion de la asociacion lenguaje - pais
  *          required:
- *              - idProfile
- *              - idMenu
+ *              - idLanguage
  *              - idStatus
+ *              - idCity
+ *              - idCountry
  *              - description
  *          example:
- *              idProfile: 6478d2e4ea2a65bf339e75f0
- *              idMenu: 6478e2982bdb19d7626a5f5d
+ *              idLanguage: 6478e2982bdb19d7b7jry678h
  *              idStatus: 6478e2982bdb19d7b7jry678h
- *              description: Perfil de usuarios del sistema
+ *              idCity: 6478d2e4ea2a65bf339e75f0
+ *              idCountry: 6478e2982bdb19d7626a5f5d
+ *              description: Lenguaje para la ciudad xxxxx
  */
 /**
  * @swagger
- * /api/menu-profile:
+ * /api/language-city:
  *  post:
- *      summary: Crea una nueva asociasion menú - perfil
- *      tags: [MenuProfile]
+ *      summary: Crea una nueva asociasion lenguaje - ciudad
+ *      tags: [LanguageCity]
  *      requestBody: 
  *          required: true
  *          content: 
  *              application/json:
  *                  schema:
  *                      type: Object
- *                      $ref: '#/components/schemas/MenuProfile'
+ *                      $ref: '#/components/schemas/LanguageCity'
  *      responses:
  *          200: 
  *            description: New status created   
  */
 /**
  * @swagger
- * /api/menu-profile:
+ * /api/language-city:
  *  get:
- *      summary: Obtiene una lista con todas las asociasiones de menú - perfil
- *      tags: [MenuProfile]
+ *      summary: Obtiene una lista con todas las asociasiones de lenguaje - ciudad
+ *      tags: [LanguageCity]
  *      description: "The endpoint returns a simple json object"
  *      produces:
  *          -application/json
@@ -71,17 +76,17 @@ let api = express.Router();
  */
 /**
  * @swagger
- * /api/menu-profile/{id}:
+ * /api/language-city/{id}:
  *  get:
- *      summary: Obtiene informacion de asociasion menú - perfil por su ID
- *      tags: [MenuProfile]
+ *      summary: Obtiene informacion de asociasion lenguaje - ciudad por su ID
+ *      tags: [LanguageCity]
  *      description: "The endpoint returns a simple json object"
  *      produces:
  *          - application/json
  *      parameters:
  *          - in: path
  *            name: id
- *            description: ID del menú - perfil
+ *            description: ID del lenguaje - ciudad
  *      responses:
  *          200:
  *              description: "Success"
@@ -94,17 +99,17 @@ let api = express.Router();
  */
 /**
  * @swagger
- * /api/menu-profile/{description}:
+ * /api/language-city/{description}:
  *  post:
- *      summary: Obtiene una lista de asociasiones menú - perfil por descripcion
- *      tags: [MenuProfile]
+ *      summary: Obtiene una lista de asociasiones lenguaje - ciudad por descripcion
+ *      tags: [LanguageCity]
  *      description: "The endpoint returns a simple json object"
  *      produces:
  *          - application/json
  *      parameters:
  *          - in: path
  *            name: description
- *            description: Descripcion de la asociacion menú - perfil
+ *            description: Descripcion de la asociacion lenguaje - ciudad
  *      responses:
  *          200:
  *              description: "Success"
@@ -117,24 +122,24 @@ let api = express.Router();
  */
 /**
  * @swagger
- * /api/menu-profile/{id}:
+ * /api/language-city/{id}:
  *  put:
- *      summary: Actualiza un menú - perfil por su ID
- *      tags: [MenuProfile]
+ *      summary: Actualiza un lenguaje - ciudad por su ID
+ *      tags: [LanguageCity]
  *      requestBody: 
  *          required: true
  *          content: 
  *              application/json:
  *                  schema:
  *                      type: Object
- *                      $ref: '#/components/schemas/MenuProfile'
+ *                      $ref: '#/components/schemas/LanguageCity'
  *      description: "The endpoint returns a simple json object"
  *      produces:
  *          - application/json
  *      parameters:
  *          - in: path
  *            name: id
- *            description: ID del menú - perfil
+ *            description: ID del lenguaje - ciudad
  *      responses:
  *          200:
  *              description: "Success"
@@ -147,17 +152,17 @@ let api = express.Router();
  */
 /**
  * @swagger
- * /api/menu-profile/{id}:
+ * /api/language-city/{id}:
  *  delete:
- *      summary: Elimina un menú - perfil por su ID
- *      tags: [MenuProfile]
+ *      summary: Elimina un lenguaje - ciudad por su ID
+ *      tags: [LanguageCity]
  *      description: "The endpoint returns a simple json object"
  *      produces:
  *          - application/json
  *      parameters:
  *          - in: path
  *            name: id
- *            description: ID del menú - perfil
+ *            description: ID del lenguaje - ciudad
  *      responses:
  *          200:
  *              description: "Success"
@@ -170,10 +175,10 @@ let api = express.Router();
  */
 /**
  * @swagger
- * /api/menu-profile:
+ * /api/language-city:
  *  delete:
- *      summary: Elimina todos los menus - perfil 
- *      tags: [MenuProfile]
+ *      summary: Elimina todos los lenguajes - ciudad
+ *      tags: [LanguageCity]
  *      description: "The endpoint returns a simple json object"
  *      produces:
  *          -application/json
@@ -189,12 +194,12 @@ let api = express.Router();
  */
 
 
-api.post("/menu-profile", Auth, MenuProfile.addMenuProfile);
-api.get("/menu-profile", Auth, MenuProfile.listMenuProfiles);
-api.get("/menu-profile/:id?", Auth, MenuProfile.listMenuProfileByID);
-api.post("/menu-profile/:description?", Auth, MenuProfile.listMenuProfiles);
-api.put("/menu-profile/:id", Auth, MenuProfile.updateMenuProfile);
-api.delete("/menu-profile/:id", Auth, MenuProfile.deleteMenuProfile);
-api.delete("/menu-profile", Auth, MenuProfile.deleteAllMenusProfile);
+api.post("/language-city", Auth, LanguageCity.addLanguageCity);
+api.get("/language-city", Auth, LanguageCity.listLanguageCity);
+api.get("/language-city/:id?", Auth, LanguageCity.listLanguageCityByID);
+api.post("/language-city/:description?", Auth, LanguageCity.listLanguageCity);
+api.put("/language-city/:id", Auth, LanguageCity.updateLanguageCity);
+api.delete("/language-city/:id", Auth, LanguageCity.deleteLanguageCity);
+api.delete("/language-city", Auth, LanguageCity.deleteAllLanguagesCity);
 
 module.exports = api;
