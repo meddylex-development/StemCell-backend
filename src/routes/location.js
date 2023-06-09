@@ -1,5 +1,5 @@
 let express = require("express");
-let MenuProfile = require("../controllers/menuProfile");
+let Location = require("../controllers/location");
 let Auth = require("../middlewares/auth");
 let api = express.Router();
 
@@ -7,55 +7,70 @@ let api = express.Router();
  * @swagger
  * components:
  *  schemas:
- *      MenuProfile:
+ *      Location:
  *          type: Object
  *          properties: 
- *              idProfile:
- *                  type: string
- *                  description: ID del perfil al cual esta asociado el menú
- *              idMenu:
- *                  type: string
- *                  description: ID del menu
  *              idStatus:
  *                  type: string
- *                  description: ID del estado
+ *                  description: ID del estado en el cual quedara la localizacion
+ *              idCity:
+ *                  type: string
+ *                  description: ID de la ciudad la localizacion
+ *              idCountry:
+ *                  type: string
+ *                  description: ID de el pais la localizacion
+ *              latitude: 
+ *                  type: string
+ *                  description: latitud de la localizacion
+ *              longitude: 
+ *                  type: string
+ *                  description: longitud de la localizacion
+ *              name: 
+ *                  type: string
+ *                  description: nombre de la localizacion
  *              description:
  *                  type: string
- *                  description: Descripcion de la asociacion menu - perfil
+ *                  description: Descripcion de la localizacion
  *          required:
- *              - idProfile
- *              - idMenu
  *              - idStatus
+ *              - idCity
+ *              - idCountry
+ *              - latitude
+ *              - longitude
+ *              - name:
  *              - description
  *          example:
- *              idProfile: 6478d2e4ea2a65bf339e75f0
- *              idMenu: 6478e2982bdb19d7626a5f5d
- *              idStatus: 6478e2982bdb19d7b7jry678h
- *              description: Perfil de usuarios del sistema
+ *              idStatus: 647a73a6d47ece6731a4d979
+ *              idCity: 647a73a6d47ece6731a4d979
+ *              idCountry: 647a73a6d47ece6731a4d979
+ *              latitude: 40.14528997427982
+ *              longitude: -2.9582043750000366
+ *              name: Cercacanias Madrid
+ *              description: Es un lugar cercano a Madrid
  */
 /**
  * @swagger
- * /api/menu-profile:
+ * /api/location:
  *  post:
- *      summary: Crea una nueva asociasion menú - perfil
- *      tags: [MenuProfile]
+ *      summary: Crea una nueva localizacion
+ *      tags: [Location]
  *      requestBody: 
  *          required: true
  *          content: 
  *              application/json:
  *                  schema:
  *                      type: Object
- *                      $ref: '#/components/schemas/MenuProfile'
+ *                      $ref: '#/components/schemas/Location'
  *      responses:
  *          200: 
- *            description: New status created   
+ *            description: New location created   
  */
 /**
  * @swagger
- * /api/menu-profile:
+ * /api/location:
  *  get:
- *      summary: Obtiene una lista con todas las asociasiones de menú - perfil
- *      tags: [MenuProfile]
+ *      summary: Obtiene una lista con todas las localizaciones
+ *      tags: [Location]
  *      description: "The endpoint returns a simple json object"
  *      produces:
  *          -application/json
@@ -71,17 +86,17 @@ let api = express.Router();
  */
 /**
  * @swagger
- * /api/menu-profile/{id}:
+ * /api/location/{id}:
  *  get:
- *      summary: Obtiene informacion de asociasion menú - perfil por su ID
- *      tags: [MenuProfile]
+ *      summary: Obtiene informacion de la localizacion por su ID
+ *      tags: [Location]
  *      description: "The endpoint returns a simple json object"
  *      produces:
  *          - application/json
  *      parameters:
  *          - in: path
  *            name: id
- *            description: ID del menú - perfil
+ *            description: ID de la localizacion
  *      responses:
  *          200:
  *              description: "Success"
@@ -94,17 +109,17 @@ let api = express.Router();
  */
 /**
  * @swagger
- * /api/menu-profile/{description}:
+ * /api/location/{name}:
  *  post:
- *      summary: Obtiene una lista de asociasiones menú - perfil por descripcion
- *      tags: [MenuProfile]
+ *      summary: Obtiene una lista de localizaciones por nombre
+ *      tags: [Location]
  *      description: "The endpoint returns a simple json object"
  *      produces:
  *          - application/json
  *      parameters:
  *          - in: path
- *            name: description
- *            description: Descripcion de la asociacion menú - perfil
+ *            name: name
+ *            description: Nombre de la localizacion
  *      responses:
  *          200:
  *              description: "Success"
@@ -117,24 +132,24 @@ let api = express.Router();
  */
 /**
  * @swagger
- * /api/menu-profile/{id}:
+ * /api/location/{id}:
  *  put:
- *      summary: Actualiza un menú - perfil por su ID
- *      tags: [MenuProfile]
+ *      summary: Actualiza un localizacion por su ID
+ *      tags: [Location]
  *      requestBody: 
  *          required: true
  *          content: 
  *              application/json:
  *                  schema:
  *                      type: Object
- *                      $ref: '#/components/schemas/MenuProfile'
+ *                      $ref: '#/components/schemas/Location'
  *      description: "The endpoint returns a simple json object"
  *      produces:
  *          - application/json
  *      parameters:
  *          - in: path
  *            name: id
- *            description: ID del menú - perfil
+ *            description: ID de la localizacion
  *      responses:
  *          200:
  *              description: "Success"
@@ -147,17 +162,17 @@ let api = express.Router();
  */
 /**
  * @swagger
- * /api/menu-profile/{id}:
+ * /api/location/{id}:
  *  delete:
- *      summary: Elimina un menú - perfil por su ID
- *      tags: [MenuProfile]
+ *      summary: Elimina una localizacion por su ID
+ *      tags: [Location]
  *      description: "The endpoint returns a simple json object"
  *      produces:
  *          - application/json
  *      parameters:
  *          - in: path
  *            name: id
- *            description: ID del menú - perfil
+ *            description: ID de la localizacion
  *      responses:
  *          200:
  *              description: "Success"
@@ -170,10 +185,10 @@ let api = express.Router();
  */
 /**
  * @swagger
- * /api/menu-profile:
+ * /api/location:
  *  delete:
- *      summary: Elimina todos los menus - perfil 
- *      tags: [MenuProfile]
+ *      summary: Elimina todos las localizaciones
+ *      tags: [Location]
  *      description: "The endpoint returns a simple json object"
  *      produces:
  *          -application/json
@@ -188,13 +203,12 @@ let api = express.Router();
  *                       "message": "Hello there"  
  */
 
-
-api.post("/menu-profile", Auth, MenuProfile.addMenuProfile);
-api.get("/menu-profile", Auth, MenuProfile.listMenuProfiles);
-api.get("/menu-profile/:id?", Auth, MenuProfile.listMenuProfileByID);
-api.post("/menu-profile/:description?", Auth, MenuProfile.listMenuProfiles);
-api.put("/menu-profile/:id", Auth, MenuProfile.updateMenuProfile);
-api.delete("/menu-profile/:id", Auth, MenuProfile.deleteMenuProfile);
-api.delete("/menu-profile", Auth, MenuProfile.deleteAllMenusProfile);
+api.post("/location", Auth, Location.addLocation);
+api.get("/location", Auth, Location.listLocations);
+api.get("/location/:id?", Auth, Location.listLocationByID);
+api.post("/location/:name?", Auth, Location.listLocations);
+api.put('/location/:id', Auth, Location.updateLocation);
+api.delete('/location/:id', Auth, Location.deleteLocation);
+api.delete("/location", Auth, Location.deleteAllLocations);
 
 module.exports = api;

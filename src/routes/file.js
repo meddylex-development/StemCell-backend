@@ -1,5 +1,5 @@
 let express = require("express");
-let MenuProfile = require("../controllers/menuProfile");
+let File = require("../controllers/file");
 let Auth = require("../middlewares/auth");
 let api = express.Router();
 
@@ -7,55 +7,66 @@ let api = express.Router();
  * @swagger
  * components:
  *  schemas:
- *      MenuProfile:
+ *      File:
  *          type: Object
  *          properties: 
- *              idProfile:
- *                  type: string
- *                  description: ID del perfil al cual esta asociado el menú
- *              idMenu:
- *                  type: string
- *                  description: ID del menu
  *              idStatus:
  *                  type: string
- *                  description: ID del estado
+ *                  description: ID del estado en el cual quedara la el archivo
+ *              name: 
+ *                  type: string
+ *                  description: nombre del archivo
+ *              extension: 
+ *                  type: string
+ *                  description: extension del archivo
+ *              location: 
+ *                  type: string
+ *                  description: path o url de la ubicacion del archivo
+ *              size: 
+ *                  type: string
+ *                  description: tamaño del archivo
  *              description:
  *                  type: string
- *                  description: Descripcion de la asociacion menu - perfil
+ *                  description: Descripcion del archivo
  *          required:
- *              - idProfile
- *              - idMenu
  *              - idStatus
+ *              - name
+ *              - extension
+ *              - location
+ *              - size
+ *              - name:
  *              - description
  *          example:
- *              idProfile: 6478d2e4ea2a65bf339e75f0
- *              idMenu: 6478e2982bdb19d7626a5f5d
- *              idStatus: 6478e2982bdb19d7b7jry678h
- *              description: Perfil de usuarios del sistema
+ *              idStatus: 647a73a6d47ece6731a4d979
+ *              name: Foto de perfil
+ *              extension: jpg
+ *              location: "../../assets/files/uploads"
+ *              size: 12.345
+ *              description: Es la foto de perfil del usurio en sesion
  */
 /**
  * @swagger
- * /api/menu-profile:
+ * /api/file:
  *  post:
- *      summary: Crea una nueva asociasion menú - perfil
- *      tags: [MenuProfile]
+ *      summary: Crea una nuevo archivo
+ *      tags: [File]
  *      requestBody: 
  *          required: true
  *          content: 
  *              application/json:
  *                  schema:
  *                      type: Object
- *                      $ref: '#/components/schemas/MenuProfile'
+ *                      $ref: '#/components/schemas/File'
  *      responses:
  *          200: 
- *            description: New status created   
+ *            description: New file created   
  */
 /**
  * @swagger
- * /api/menu-profile:
+ * /api/file:
  *  get:
- *      summary: Obtiene una lista con todas las asociasiones de menú - perfil
- *      tags: [MenuProfile]
+ *      summary: Obtiene una lista con todos los archivos
+ *      tags: [File]
  *      description: "The endpoint returns a simple json object"
  *      produces:
  *          -application/json
@@ -71,17 +82,17 @@ let api = express.Router();
  */
 /**
  * @swagger
- * /api/menu-profile/{id}:
+ * /api/file/{id}:
  *  get:
- *      summary: Obtiene informacion de asociasion menú - perfil por su ID
- *      tags: [MenuProfile]
+ *      summary: Obtiene informacion de un archivo por su ID
+ *      tags: [File]
  *      description: "The endpoint returns a simple json object"
  *      produces:
  *          - application/json
  *      parameters:
  *          - in: path
  *            name: id
- *            description: ID del menú - perfil
+ *            description: ID del archivo
  *      responses:
  *          200:
  *              description: "Success"
@@ -94,17 +105,17 @@ let api = express.Router();
  */
 /**
  * @swagger
- * /api/menu-profile/{description}:
+ * /api/file/{name}:
  *  post:
- *      summary: Obtiene una lista de asociasiones menú - perfil por descripcion
- *      tags: [MenuProfile]
+ *      summary: Obtiene una lista de archivos por nombre
+ *      tags: [File]
  *      description: "The endpoint returns a simple json object"
  *      produces:
  *          - application/json
  *      parameters:
  *          - in: path
- *            name: description
- *            description: Descripcion de la asociacion menú - perfil
+ *            name: name
+ *            description: Nombre del archivo
  *      responses:
  *          200:
  *              description: "Success"
@@ -117,24 +128,24 @@ let api = express.Router();
  */
 /**
  * @swagger
- * /api/menu-profile/{id}:
+ * /api/file/{id}:
  *  put:
- *      summary: Actualiza un menú - perfil por su ID
- *      tags: [MenuProfile]
+ *      summary: Actualiza un archivo por su ID
+ *      tags: [File]
  *      requestBody: 
  *          required: true
  *          content: 
  *              application/json:
  *                  schema:
  *                      type: Object
- *                      $ref: '#/components/schemas/MenuProfile'
+ *                      $ref: '#/components/schemas/File'
  *      description: "The endpoint returns a simple json object"
  *      produces:
  *          - application/json
  *      parameters:
  *          - in: path
  *            name: id
- *            description: ID del menú - perfil
+ *            description: ID del archivo
  *      responses:
  *          200:
  *              description: "Success"
@@ -147,17 +158,17 @@ let api = express.Router();
  */
 /**
  * @swagger
- * /api/menu-profile/{id}:
+ * /api/file/{id}:
  *  delete:
- *      summary: Elimina un menú - perfil por su ID
- *      tags: [MenuProfile]
+ *      summary: Elimina un archivo por su ID
+ *      tags: [File]
  *      description: "The endpoint returns a simple json object"
  *      produces:
  *          - application/json
  *      parameters:
  *          - in: path
  *            name: id
- *            description: ID del menú - perfil
+ *            description: ID del archivo
  *      responses:
  *          200:
  *              description: "Success"
@@ -170,10 +181,10 @@ let api = express.Router();
  */
 /**
  * @swagger
- * /api/menu-profile:
+ * /api/file:
  *  delete:
- *      summary: Elimina todos los menus - perfil 
- *      tags: [MenuProfile]
+ *      summary: Elimina todos los archivos
+ *      tags: [File]
  *      description: "The endpoint returns a simple json object"
  *      produces:
  *          -application/json
@@ -188,13 +199,12 @@ let api = express.Router();
  *                       "message": "Hello there"  
  */
 
-
-api.post("/menu-profile", Auth, MenuProfile.addMenuProfile);
-api.get("/menu-profile", Auth, MenuProfile.listMenuProfiles);
-api.get("/menu-profile/:id?", Auth, MenuProfile.listMenuProfileByID);
-api.post("/menu-profile/:description?", Auth, MenuProfile.listMenuProfiles);
-api.put("/menu-profile/:id", Auth, MenuProfile.updateMenuProfile);
-api.delete("/menu-profile/:id", Auth, MenuProfile.deleteMenuProfile);
-api.delete("/menu-profile", Auth, MenuProfile.deleteAllMenusProfile);
+api.post("/file", Auth, File.addFile);
+api.get("/file", Auth, File.listFile);
+api.get("/file/:id?", Auth, File.listFileByID);
+api.post("/file/:name?", Auth, File.listFile);
+api.put('/file/:id', Auth, File.updateFile);
+api.delete('/file/:id', Auth, File.deleteFile);
+api.delete("/file", Auth, File.deleteAllFiles);
 
 module.exports = api;

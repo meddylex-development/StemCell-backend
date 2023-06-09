@@ -1,5 +1,5 @@
 let express = require("express");
-let MenuProfile = require("../controllers/menuProfile");
+let Currency = require("../controllers/currency");
 let Auth = require("../middlewares/auth");
 let api = express.Router();
 
@@ -7,55 +7,55 @@ let api = express.Router();
  * @swagger
  * components:
  *  schemas:
- *      MenuProfile:
+ *      Currency:
  *          type: Object
  *          properties: 
- *              idProfile:
- *                  type: string
- *                  description: ID del perfil al cual esta asociado el menú
- *              idMenu:
- *                  type: string
- *                  description: ID del menu
  *              idStatus:
  *                  type: string
- *                  description: ID del estado
+ *                  description: ID del estado en el cual quedara la moneda
+ *              idCountry:
+ *                  type: string
+ *                  description: ID de el pais la moneda
+ *              name: 
+ *                  type: string
+ *                  description: nombre de la moneda
  *              description:
  *                  type: string
- *                  description: Descripcion de la asociacion menu - perfil
+ *                  description: Descripcion de la moneda
  *          required:
- *              - idProfile
- *              - idMenu
  *              - idStatus
+ *              - idCountry
+ *              - name:
  *              - description
  *          example:
- *              idProfile: 6478d2e4ea2a65bf339e75f0
- *              idMenu: 6478e2982bdb19d7626a5f5d
- *              idStatus: 6478e2982bdb19d7b7jry678h
- *              description: Perfil de usuarios del sistema
+ *              idStatus: 647a73a6d47ece6731a4d979
+ *              idCountry: 647a73a6d47ece6731a4d979
+ *              name: COP - Peso Colombiano
+ *              description: Moneda oficial de la Republica de Colombia
  */
 /**
  * @swagger
- * /api/menu-profile:
+ * /api/currency:
  *  post:
- *      summary: Crea una nueva asociasion menú - perfil
- *      tags: [MenuProfile]
+ *      summary: Crea una nueva moneda
+ *      tags: [Currency]
  *      requestBody: 
  *          required: true
  *          content: 
  *              application/json:
  *                  schema:
  *                      type: Object
- *                      $ref: '#/components/schemas/MenuProfile'
+ *                      $ref: '#/components/schemas/Currency'
  *      responses:
  *          200: 
- *            description: New status created   
+ *            description: New location created   
  */
 /**
  * @swagger
- * /api/menu-profile:
+ * /api/currency:
  *  get:
- *      summary: Obtiene una lista con todas las asociasiones de menú - perfil
- *      tags: [MenuProfile]
+ *      summary: Obtiene una lista con todas las monedas
+ *      tags: [Currency]
  *      description: "The endpoint returns a simple json object"
  *      produces:
  *          -application/json
@@ -71,17 +71,17 @@ let api = express.Router();
  */
 /**
  * @swagger
- * /api/menu-profile/{id}:
+ * /api/currency/{id}:
  *  get:
- *      summary: Obtiene informacion de asociasion menú - perfil por su ID
- *      tags: [MenuProfile]
+ *      summary: Obtiene informacion de la moneda por su ID
+ *      tags: [Currency]
  *      description: "The endpoint returns a simple json object"
  *      produces:
  *          - application/json
  *      parameters:
  *          - in: path
  *            name: id
- *            description: ID del menú - perfil
+ *            description: ID de la moneda
  *      responses:
  *          200:
  *              description: "Success"
@@ -94,17 +94,17 @@ let api = express.Router();
  */
 /**
  * @swagger
- * /api/menu-profile/{description}:
+ * /api/currency/{name}:
  *  post:
- *      summary: Obtiene una lista de asociasiones menú - perfil por descripcion
- *      tags: [MenuProfile]
+ *      summary: Obtiene una lista de monedas por nombre
+ *      tags: [Currency]
  *      description: "The endpoint returns a simple json object"
  *      produces:
  *          - application/json
  *      parameters:
  *          - in: path
- *            name: description
- *            description: Descripcion de la asociacion menú - perfil
+ *            name: name
+ *            description: Nombre de la moneda
  *      responses:
  *          200:
  *              description: "Success"
@@ -117,24 +117,24 @@ let api = express.Router();
  */
 /**
  * @swagger
- * /api/menu-profile/{id}:
+ * /api/currency/{id}:
  *  put:
- *      summary: Actualiza un menú - perfil por su ID
- *      tags: [MenuProfile]
+ *      summary: Actualiza un moneda por su ID
+ *      tags: [Currency]
  *      requestBody: 
  *          required: true
  *          content: 
  *              application/json:
  *                  schema:
  *                      type: Object
- *                      $ref: '#/components/schemas/MenuProfile'
+ *                      $ref: '#/components/schemas/Currency'
  *      description: "The endpoint returns a simple json object"
  *      produces:
  *          - application/json
  *      parameters:
  *          - in: path
  *            name: id
- *            description: ID del menú - perfil
+ *            description: ID de la moneda
  *      responses:
  *          200:
  *              description: "Success"
@@ -147,17 +147,17 @@ let api = express.Router();
  */
 /**
  * @swagger
- * /api/menu-profile/{id}:
+ * /api/currency/{id}:
  *  delete:
- *      summary: Elimina un menú - perfil por su ID
- *      tags: [MenuProfile]
+ *      summary: Elimina una moneda por su ID
+ *      tags: [Currency]
  *      description: "The endpoint returns a simple json object"
  *      produces:
  *          - application/json
  *      parameters:
  *          - in: path
  *            name: id
- *            description: ID del menú - perfil
+ *            description: ID de la moneda
  *      responses:
  *          200:
  *              description: "Success"
@@ -170,10 +170,10 @@ let api = express.Router();
  */
 /**
  * @swagger
- * /api/menu-profile:
+ * /api/currency:
  *  delete:
- *      summary: Elimina todos los menus - perfil 
- *      tags: [MenuProfile]
+ *      summary: Elimina todas las monedas
+ *      tags: [Currency]
  *      description: "The endpoint returns a simple json object"
  *      produces:
  *          -application/json
@@ -188,13 +188,12 @@ let api = express.Router();
  *                       "message": "Hello there"  
  */
 
-
-api.post("/menu-profile", Auth, MenuProfile.addMenuProfile);
-api.get("/menu-profile", Auth, MenuProfile.listMenuProfiles);
-api.get("/menu-profile/:id?", Auth, MenuProfile.listMenuProfileByID);
-api.post("/menu-profile/:description?", Auth, MenuProfile.listMenuProfiles);
-api.put("/menu-profile/:id", Auth, MenuProfile.updateMenuProfile);
-api.delete("/menu-profile/:id", Auth, MenuProfile.deleteMenuProfile);
-api.delete("/menu-profile", Auth, MenuProfile.deleteAllMenusProfile);
+api.post("/currency", Auth, Currency.addCurrency);
+api.get("/currency", Auth, Currency.listCurrency);
+api.get("/currency/:id?", Auth, Currency.listCurrencyByID);
+api.post("/currency/:name?", Auth, Currency.listCurrency);
+api.put('/currency/:id', Auth, Currency.updateCurrency);
+api.delete('/currency/:id', Auth, Currency.deleteCurrency);
+api.delete("/currency", Auth, Currency.deleteAllCurrency);
 
 module.exports = api;
