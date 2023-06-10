@@ -10,12 +10,16 @@ const xlsReader = require('xlsx');
 const crypto = require('crypto');
 
 
+let File = require("../models/file");
+let FileUser = require("../models/fileUser");
+
+
 const verifyToken = (payload) => {
 
     return new Promise((resolve, reject) => {
 
         if (!payload) {
-            reject({ data: new Error("Not authorized"), statusRequest: false });
+            resolve({ data: "No tiene acceso!", statusRequest: false });
         } else {
 
             try {
@@ -23,23 +27,19 @@ const verifyToken = (payload) => {
                     algorithm: 'RS256',
                     // audience: '078b1750-dd74-11e9-8a34-2a2ae2dbcce4'
                 });
-                console.log('decoded: ', decoded);
 
                 let dateNow = moment().valueOf();
-                console.log('dateNow ------------->>>>>> ', Utils.getDateFormat(dateNow, 'DD/MM/YYYY HH:mm'));
                 let timeExpired = decoded.exp;
-                console.log('timeExpired ------------->>>>>> ', Utils.getDateFormat(timeExpired, 'DD/MM/YYYY HH:mm'));
                 let isExpired = timeExpired < dateNow;
-                console.log('isExpired: ', isExpired);
                 if (isExpired) {
                     // res.status(401).send({ data: 'Token expired', statusRequest: false });
-                    reject({ data: 'Token expired', statusRequest: false });
+                    resolve({ data: "Token ha expirado!", statusRequest: false });
+                } else {
+                    resolve({ data: { encoded: payload, decoded: decoded }, statusRequest: true });
                 }
-                resolve({ data: { encoded: payload, decoded: decoded }, statusRequest: true });
                 
             } catch (error) {
-                // console.log('error: ', error);
-                reject({ data: error.message, statusRequest: false });
+                resolve({ data: "Token no valido!", statusRequest: false });
             }
 
         }
@@ -61,11 +61,9 @@ const createToken = (dataToken, timeExpired = null, typeTime = null, numberTime 
                     iat: getDateNowMilisec(),
                     exp: dateExpired,
                 };
-                // console.log('payload: ', payload);
                 const encode = jwt.sign(payload, secret);
                 resolve({ data: encode, statusRequest: true });
             } catch (error) {
-                // console.log('error: ', error);
                 resolve({ data: error.message, statusRequest: false });
             }
 
@@ -104,16 +102,26 @@ const uploadFile = (temporalPath, pathServer, fileName, fileExtension) => {
 
 const readFile = (pathFile) => {
     return new Promise((resolve, reject) => {
-        if (!pathFile) reject(new Error('No path file'));            
-        let pathTemplate = path.join(__dirname, '../..', pathFile);
-        fs.readFile(pathTemplate, { encoding: 'utf-8' }, function (err, dataFile) {
-            if (err) {
-                reject(err); 
-            throw err;
+        if (!pathFile) reject(new Error('No path file'));  
+        
+        // Comprobamos que el archivo exista
+        fs.access(pathFile, fs.constants.F_OK, (error) => {
+            if (error) {
+              resolve({ data: error, statusRequest: false });
             } else {
-                resolve(dataFile);
+                
+                let pathTemplate = path.join(__dirname, '../..', pathFile);
+                fs.readFile(pathTemplate, { encoding: 'utf-8' }, function (err, dataFile) {
+                    if (err) {
+                        reject({ data: err, statusRequest: false }); 
+                    throw err;
+                    } else {
+                        resolve({ data: dataFile, statusRequest: true });
+                    }
+                });
             }
         });
+
     })
 };
 
@@ -122,40 +130,176 @@ const readXlsFile = (pathFile, isStoreBuffer = false) => {
 
         if (!pathFile) reject(new Error('No path file'));
 
-        let data = {};
-        let workbook = null;
-        if (isStoreBuffer) {
-            const buffer = fs.readFileSync(pathFile);
-            workbook = xlsReader.read(buffer, { type: 'buffer' });
-        } else {
-            workbook = xlsReader.readFile(filePath);
-        }
+        // Comprobamos que el archivo exista
+        fs.access(pathFile, fs.constants.F_OK, (error) => {
+            if (error) {
+              resolve({ data: error, statusRequest: false })
+            } else {
+              
+                let data = {};
+                let workbook = null;
+                if (isStoreBuffer) {
+                    const buffer = fs.readFileSync(pathFile);
+                    workbook = xlsReader.read(buffer, { type: 'buffer' });
+                } else {
+                    workbook = xlsReader.readFile(pathFile);
+                }
 
-        if (!workbook) reject(new Error('Error reading file!'));
+                if (!workbook) reject(new Error('Error reading file!'));
 
-        const sheets = workbook.SheetNames;
-        for(let i = 0; i < sheets.length; i++) {
-            
-            let fileSheetNames = workbook.SheetNames[i];
-            let dataSheet = data[fileSheetNames] = [];
-            const temp = xlsReader.utils.sheet_to_json(workbook.Sheets[fileSheetNames]);
-            temp.forEach((res) => {
-                dataSheet.push(res);
-            });
-        }
-        resolve(data);
+                const sheets = workbook.SheetNames;
+                for(let i = 0; i < sheets.length; i++) {
+                    
+                    let fileSheetNames = workbook.SheetNames[i];
+                    let dataSheet = data[fileSheetNames] = [];
+                    const temp = xlsReader.utils.sheet_to_json(workbook.Sheets[fileSheetNames]);
+                    temp.forEach((res) => {
+                        dataSheet.push(res);
+                    });
+                }
+                resolve({ data: data, statusRequest: true });
+                
+            }
+        });
+
+
+        
     });
 };
 
-const storageFile = (temporalPath, pathServer, fileName) => {
+const storageFile = (objFile = null, user = null) => {
     return new Promise((resolve, reject) => {
-        if (!pathServer) {
+        if (!objFile || !user) {
             reject({ data: new Error("No se definio la ruta del archivo"), statusRequest: false });
         } else {
-            let imagePath = temporalPath;
-            let routeServer = path.join(__dirname, '../..', pathServer + fileName);
-            fs.createReadStream(imagePath).pipe(fs.createWriteStream(routeServer));
-            resolve({ urlFile: routeServer, statusRequest: true });
+
+            const dateNow = getDateNowMilisec();
+
+            const uuidNameFile = getUUID();
+            let originalFileName = objFile.originalFilename;
+            let sizeFile = objFile.size;
+            let tempFilePath = objFile.path;
+            let fileExtension = path.extname(tempFilePath);
+            let filePath = path.join(__dirname, '../..', 'assets/uploads/temp/' + originalFileName);
+
+            fs.rename(tempFilePath, filePath, async (errorSaved) => {
+                // fs.createReadStream(tempFilePath).pipe(fs.createWriteStream(filePath, async (errorSaved) => {
+                if (errorSaved) {
+                    reject({ data: "Error al tratar de almacenar el archivo", statusRequest: false });
+                    // res.status(500).json({ error: 'Error al cargar el archivo' });
+                } else {
+
+                    const file_ = new File({
+                        idStatus: user.idStatus,
+                        name: originalFileName,
+                        originalName: originalFileName,
+                        extension: fileExtension,
+                        location: filePath,
+                        size: sizeFile,
+                        description: "Archivo ",
+                        dateCreated: dateNow,
+                        dateUpdated: dateNow,
+                    });
+                    await file_.save((err, dataResponse) => {
+                        if (err) {
+                            reject({ data: "Error al conectar al servidor", statusRequest: false });
+                            // res.status(500).send({ data: "Error al conectar al servidor", statusRequest: false });
+                        } else {
+                            if (dataResponse) {
+
+                                const fileUser_ = new FileUser({
+                                    idStatus: dataResponse.idStatus,
+                                    idFile: dataResponse._id,
+                                    idUser: user._id,
+                                    name: "Carga archivo",
+                                    description: "Carga archivo",
+                                    dateCreated: dateNow,
+                                    dateUpdated: dateNow,
+                                });
+                                fileUser_.save((error, dataRes) => {
+                                    if (error) {
+                                        reject({ data: "Error al conectar al servidor", statusRequest: false });
+                                        // res.status(500).send({ data: "Error al conectar al servidor", statusRequest: false });
+                                    } else {
+                                        resolve({ data: dataResponse, statusRequest: true });
+                                    }
+                                });
+                            } else {
+                                // res.status(401).send({ data: "No se pudo registrar la direccion", statusRequest: false });
+                                reject({ data: "Error al conectar al servidor", statusRequest: false });
+                            }
+                        }
+                    });
+                }
+            });
+        }
+    });
+};
+
+const storageBlobFile = (objFile = null, user = null) => {
+    return new Promise((resolve, reject) => {
+        if (!objFile || !user) {
+            reject({ data: new Error("No se definio la ruta del archivo"), statusRequest: false });
+        } else {
+
+            const dateNow = getDateNowMilisec();
+
+            const uuidNameFile = getUUID();
+            let originalFileName = objFile.originalFilename;
+            let sizeFile = objFile.size;
+            let tempFilePath = objFile.path;
+            let fileExtension = path.extname(tempFilePath);
+            let blobPath = path.join(__dirname, '../..', 'assets/uploads/blob/' + uuidNameFile + '.blob');
+            
+            fs.rename(tempFilePath, blobPath, async (errorSaved) => {
+                if (errorSaved) {
+                    reject({ data: "Error al tratar de almacenar el archivo", statusRequest: false });
+                    // res.status(500).json({ error: 'Error al cargar el archivo' });
+                } else {
+
+                    const file_ = new File({
+                        idStatus: "647a73a6d47ece6731a4d979",
+                        name: uuidNameFile,
+                        originalName: originalFileName,
+                        extension: fileExtension,
+                        location: blobPath,
+                        size: sizeFile,
+                        description: "Archivo blob " + uuidNameFile,
+                        dateCreated: dateNow,
+                        dateUpdated: dateNow,
+                    });
+                    await file_.save((err, dataResponse) => {
+                        if (err) {
+                            reject({ data: "Error al conectar al servidor", statusRequest: false });
+                            // res.status(500).send({ data: "Error al conectar al servidor", statusRequest: false });
+                        } else {
+                            if (dataResponse) {
+
+                                const fileUser_ = new FileUser({
+                                    idStatus: dataResponse.idStatus,
+                                    idFile: dataResponse._id,
+                                    idUser: user._id,
+                                    name: "Carga archivo blob - " + uuidNameFile,
+                                    description: "Carga archivo blob - " + uuidNameFile,
+                                    dateCreated: dateNow,
+                                    dateUpdated: dateNow,
+                                });
+                                fileUser_.save((error, dataRes) => {
+                                    if (error) {
+                                        reject({ data: "Error al conectar al servidor", statusRequest: false });
+                                        // res.status(500).send({ data: "Error al conectar al servidor", statusRequest: false });
+                                    } else {
+                                        resolve({ data: dataResponse, statusRequest: true });
+                                    }
+                                });
+                            } else {
+                                // res.status(401).send({ data: "No se pudo registrar la direccion", statusRequest: false });
+                                reject({ data: "Error al conectar al servidor", statusRequest: false });
+                            }
+                        }
+                    });
+                }
+            });
         }
     });
 };
@@ -190,4 +334,5 @@ module.exports = {
     storageFile,
     getFileStorage,
     fileToBlob,
+    storageBlobFile,
 };

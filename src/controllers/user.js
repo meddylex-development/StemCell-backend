@@ -17,7 +17,9 @@ const addUser = async (req, res) => {
         params.idLanguage && 
         params.idFile && 
         params.idAddress && 
-        params.firstName &&
+        params.verifiedAccount && 
+        params.sessionStatus && 
+        params.firstName && 
         params.secondFirstName &&
         params.lastName &&
         params.secondLastName &&
@@ -38,6 +40,10 @@ const addUser = async (req, res) => {
             user_.idLanguage = params.idLanguage;
             user_.idFile = params.idFile;
             user_.idAddress = params.idAddress;
+            user_.verifiedAccount = false;
+            // user_.verifiedAccount = params.verifiedAccount;
+            user_.sessionStatus = false;
+            // user_.sessionStatus = params.firstName;
             user_.firstName = params.firstName;
             user_.secondFirstName = params.secondFirstName;
             user_.lastName = params.lastName;
@@ -70,13 +76,13 @@ const listUser = (req, res) => {
     let documentNumber = req.params["documentNumber"];
     User.find({ documentNumber: new RegExp(documentNumber, "i") }, (err, dataResponse) => {
         if (err) {
-          res.status(500).send({ data: "Error al conectar al servidor", statusRequest: false });
+            res.status(500).send({ data: "Error al conectar al servidor", statusRequest: false });
         } else {
-          if (dataResponse) {
-            res.status(200).send({ data: dataResponse, statusRequest: true });
-          } else {
-            res.status(401).send({ data: "No existe el usuario", statusRequest: false });
-          }
+            if (dataResponse) {
+                res.status(200).send({ data: dataResponse, statusRequest: true });
+            } else {
+                res.status(401).send({ data: "No existe el usuario", statusRequest: false });
+            }
         }
     });
 };
@@ -113,6 +119,8 @@ const updateUser = (req, res) => {
             idLanguage: params.idLanguage,
             idFile: params.idFile,
             idAddress: params.idAddress,
+            verifiedAccount: false,
+            sessionStatus: false,
             firstName: params.firstName,
             secondFirstName: params.secondFirstName,
             lastName: params.lastName,

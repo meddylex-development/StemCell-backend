@@ -37,7 +37,7 @@ const swaggerSpec = {
     openapi: "3.0.3", // present supported openapi version
     info: {
       version: "1.0.0", // version number
-      title: "Celula madre backend API", // short title.
+      title: "Backend API", // short title.
       description: "Esta es una descripcion de la API", //  desc.
       summary: "Este es un resumen de la API",
       // contact: {
@@ -61,7 +61,7 @@ const swaggerSpec = {
     servers: [
       {
         "url": "http://localhost:3001",
-        "description": "Development server"
+        "description": "Local server"
       },
       // {
       //   "url": "http://localhost:9000",

@@ -4,6 +4,19 @@ let jwt = require("../libs/jwt");
 let User = require("../models/user");
 let Utils = require("../utils/utils");
 
+/* ********** START - Activate account method ********** */
+const userActivateAccount = async (req, res) => {
+    let token = req.params["token"];
+    console.log('token: ', token);
+    let isValidToken = await Utils.verifyToken(token);
+    console.log('isValidToken: ', isValidToken);
+    if (!isValidToken.statusRequest) {
+        res.status(500).send({ data: isValidToken.data, statusRequest: false });
+    } else {
+        res.status(200).send({ data: isValidToken, statusRequest: true });
+    }
+};
+/* *********** END - Activate account method *********** */
 /* ********** START - Sign in user method ********** */
 const userSignIn = (req, res) => {
     let params = req.body;
@@ -19,7 +32,9 @@ const userSignIn = (req, res) => {
                                 let dateExpired = moment().add(10, "days").add(1, "minutes").valueOf();
                                 let objUser = { 
                                     _id: dataUser._id, 
-                                    email: dataUser.email 
+                                    idStatus: dataUser.idStatus,
+                                    verifiedAccount: dataUser.verifiedAccount,
+                                    email: dataUser.email,
                                 };
                                 let dataToken = await Utils.createToken(objUser, dateExpired)
                                 if (!dataToken) {
@@ -52,32 +67,48 @@ const userSignUp = (req, res) => {
     let user_ = new User();
     if (
         params.idStatus &&
-        params.idProfile &&
+        // params.idProfile && 
+        params.idDocumentType && 
+        params.idCountry && 
+        params.idCity && 
+        // params.idLanguage && 
+        // params.idFile && 
+        // params.idAddress && 
+        // params.verifiedAccount && 
+        // params.sessionStatus && 
         params.firstName &&
         params.secondFirstName &&
         params.lastName &&
         params.secondLastName &&
-        params.idDocumentType && 
-        params.idCountry && 
-        params.idCity && 
         params.documentNumber &&
         params.email &&
         params.password &&
-        params.address &&
-        params.phoneNumber &&
+        // params.address && 
+        // params.phoneNumber && 
         params.birthDate
     ) {
       bcrypt.hash(params.password, null, null, (err, hash) => {
         if (hash) {
-            user_.idStatus = params.idStatus;
-            user_.idProfile = params.idProfile;
+            user_.idStatus = "647a73a6d47ece6731a4d979";
+            // user_.idStatus = params.idStatus;
+            user_.idProfile = "6483fecbaf1928599d9e5136";
+            // user_.idProfile = params.idProfile;
+            user_.idDocumentType = params.idDocumentType;
+            user_.idCountry = params.idCountry;
+            user_.idCity = params.idCity;
+            user_.idLanguage = "648163305bb401e67e7a7c1c";
+            // user_.idLanguage = params.idLanguage;
+            user_.idFile = "6484024070269c59deb2db51";
+            // user_.idFile = params.idFile;
+            // user_.idAddress = params.idAddress;
+            user_.verifiedAccount = false;
+            // user_.verifiedAccount = params.verifiedAccount;
+            user_.sessionStatus = false;
+            // user_.sessionStatus = params.firstName;
             user_.firstName = params.firstName;
             user_.secondFirstName = params.secondFirstName;
             user_.lastName = params.lastName;
             user_.secondLastName = params.secondLastName;
-            user_.idDocumentType = params.idDocumentType;
-            user_.idCountry = params.idCountry;
-            user_.idCity = params.idCity;
             user_.documentNumber = params.documentNumber;
             user_.email = params.email;
             user_.password = hash;
@@ -101,6 +132,7 @@ const userSignUp = (req, res) => {
 };
 /* *********** END - Add new user method *********** */
 module.exports = {
+    userActivateAccount,
     userSignIn,
     userSignUp,
 };

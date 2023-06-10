@@ -142,9 +142,32 @@ let api = express.Router();
  *          200: 
  *            description: Test sign in 
  */
-
+/**
+ * @swagger
+ * /api/auth/activate-account/{token}:
+ *  get:
+ *      summary: Activa la cuenta de un usuario
+ *      tags: [Auth]
+ *      description: "The endpoint returns a simple json object"
+ *      produces:
+ *          - application/json
+ *      parameters:
+ *          - in: path
+ *            name: token
+ *            description: Token para validar el usuario
+ *      responses:
+ *          200:
+ *              description: "Success"
+ *              content:
+ *                  application/json:
+ *                      schema:
+ *                          type: object
+ *                      example:
+ *                       "message": "Hello there"  
+ */
 
 api.post("/auth/sign-up", Auth.userSignUp);
 api.post("/auth/sign-in", Auth.userSignIn);
+api.get("/auth/activate-account/:token", Auth.userActivateAccount);
 
 module.exports = api;

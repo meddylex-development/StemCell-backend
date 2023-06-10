@@ -34,6 +34,12 @@ let api = express.Router();
  *              idAddress: 
  *                  type: string
  *                  description: ID de la direccion de residencia
+ *              verifiedAccount: 
+ *                  type: boolean
+ *                  description: Valida si la cuenta esta activa
+ *              sessionStatus: 
+ *                  type: boolean
+ *                  description: Estado de session - Online / Offline
  *              firstName: 
  *                  type: string
  *                  description: Primer nombre
@@ -73,6 +79,8 @@ let api = express.Router();
  *              - idLanguage
  *              - idFile
  *              - idAddress
+ *              - verifiedAccount
+ *              - sessionStatus
  *              - firstName
  *              - secondFirstName
  *              - lastName
@@ -92,6 +100,8 @@ let api = express.Router();
  *              idLanguage: 87v6dfgdgdfg8fdg89gf
  *              idFile: 87v6dfgdgdfg8fdg89gf
  *              idAddress: 87v6dfgdgdfg8fdg89gf
+ *              verifiedAccount: false
+ *              sessionStatus: false
  *              firstName: Alex
  *              secondFirstName: Pepe 
  *              lastName: Perez

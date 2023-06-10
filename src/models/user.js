@@ -12,6 +12,8 @@ let userSchema = Schema({
     idLanguage: { type: Schema.ObjectId, ref: "language" },
     idFile: { type: Schema.ObjectId, ref: "file" },
     idAddress: { type: Schema.ObjectId, ref: "address" },
+    verifiedAccount: Boolean,
+    sessionStatus: Boolean,
     firstName: String,
     secondFirstName: String,
     lastName: String,

@@ -1,6 +1,6 @@
 let express = require("express");
 let Develop = require("../controllers/develop");
-// let Auth = require("../middlewares/auth");
+let Auth = require("../middlewares/auth");
 
 // Importamos libreria para la carga de archivos multiparty
 let multiparty = require("connect-multiparty");
@@ -18,7 +18,7 @@ api.get(
 );
 api.post(
     "/dev/uploadFile", 
-    // Auth, 
+    Auth, 
     path, 
     Develop.uploadFile
 );
@@ -35,7 +35,7 @@ api.post(
 );
 api.post(
     "/dev/uploadFileAndSaveBlob", 
-    // Auth, 
+    Auth, 
     path, 
     Develop.uploadFileAndSaveBlob
 );

@@ -23,7 +23,7 @@ module.exports = (req, res, next) => {
             // audience: '078b1750-dd74-11e9-8a34-2a2ae2dbcce4'
         });
         
-        // console.log('decoded ------------->>>>>> ', decoded);
+        console.log('decoded ------------->>>>>> ', decoded);
         let dateNow = moment().valueOf();
         console.log('dateNow ------------->>>>>> ', Utils.getDateFormat(dateNow, 'DD/MM/YYYY HH:mm'));
         let timeExpired = decoded.exp;
@@ -32,6 +32,11 @@ module.exports = (req, res, next) => {
         console.log('isTokenExpired: ', isExpired);
         if (isExpired) {
             res.status(401).send({ data: 'Token expired', statusRequest: false });
+        }
+        let isVerifiedAccount = decoded.verifiedAccount;
+        console.log('isVerifiedAccount: ', isVerifiedAccount);
+        if (!isVerifiedAccount) {
+            res.status(401).send({ data: "This account isn't verified!", statusRequest: false });
         }
         req.user = decoded;
         req.payload = token;
