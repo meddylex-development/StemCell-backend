@@ -1,14 +1,13 @@
 let jwt = require("jsonwebtoken");
 let moment = require("moment");
-let secret = "BaseParkway-StemCell-2021*.";
-// Importamos modulo node para el control de ficheros
 let fs = require("fs");
-// Importamos modulo path
 let path = require("path");
-// Importamos modulo para usar con archivos xls
 const xlsReader = require('xlsx');
 const crypto = require('crypto');
+const nodemailer = require('nodemailer');
+let handlebars = require('handlebars');
 
+let secret = "BaseParkway-StemCell-2021*.";
 
 let File = require("../models/file");
 let FileUser = require("../models/fileUser");
@@ -309,7 +308,7 @@ const getFileStorage = (filename) => {
     return fs.createReadStream(filePath);
 };
 
-function fileToBlob(filePath) {
+const fileToBlob = (filePath) => {
     return new Promise((resolve, reject) => {
       fs.readFile(filePath, (error, data) => {
         if (error) {
@@ -320,7 +319,64 @@ function fileToBlob(filePath) {
         }
       });
     });
-}
+};
+
+const sendMail = (dataUser = null, stringHTML = null, replacementsHTML = null, textBodyEmail = null, filesToSend = null, imgsMail = null) => {
+    return new Promise((resolve, reject) => {
+
+        if (!dataUser) reject(new Error('Data user empty!')); 
+
+        let transporter = nodemailer.createTransport({
+            host: 'smtp.gmail.com',
+            port: 465, 
+            secure: true,
+            // service: 'gmail',
+            auth: {
+              user: 'meddylex.development@gmail.com',
+              pass: 'zsgocqxwpexjdyuj'
+            }
+        });
+        const mailOptions = {
+            from: 'Baseparkway <meddylex.development@gmail.com>',
+            to: dataUser.email,
+            subject: dataUser.subject,
+        };
+        if (stringHTML) {
+            let template = handlebars.compile(stringHTML);
+            let replacements = replacementsHTML;
+            let htmlToSend = template(replacements);
+            mailOptions['html'] = htmlToSend;
+            mailOptions['text'] = '';
+        }
+
+        if (textBodyEmail) {
+            mailOptions['text'] = textBodyEmail;
+            mailOptions['html'] = '';
+        }
+
+        if(filesToSend) {
+            mailOptions['attachments'] = filesToSend;
+        }
+
+        if (imgsMail) {
+            mailOptions['attachments'] = [
+                {
+                    filename: 'img1.jpg',
+                    path: '../templates/images/img1.jpg',
+                    cid: 'unique@german.test' //same cid value as in the html img src
+                }
+            ];
+        }
+        transporter.sendMail(mailOptions, (error, info) => {
+            if (error) {
+                resolve({ data: error, statusRequest: false });
+            } else {
+                // console.log('Correo enviado: ' + info.response);
+                resolve({ data: info, statusRequest: true });
+            }
+        });
+    });
+};
 
 module.exports = {
     createToken,
@@ -335,4 +391,5 @@ module.exports = {
     getFileStorage,
     fileToBlob,
     storageBlobFile,
+    sendMail
 };

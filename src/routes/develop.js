@@ -39,6 +39,12 @@ api.post(
     path, 
     Develop.uploadFileAndSaveBlob
 );
+api.post(
+    "/dev/sendMail", 
+    // Auth, 
+    // path, 
+    Develop.sendMail,
+);
 
 // api.post(
 //     "/dev/", 

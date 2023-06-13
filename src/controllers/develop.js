@@ -13,13 +13,18 @@ const getNewToken = async (req, res) => {
     // let params = req.body;
     // let dateNow = Utils.getDateNowMilisec();
     let dateNow = Utils.getDateNowMilisec();
-    let data = {"_id": "6474e721d0177e6dea75f4b0",
-        "name": "Usuario incognito de pruebas",
-        "description": "Nuevo token para uso en consumo de apis",
-        "use": "Development", 
-        "verifiedAccount": true, 
-        "dateCreated": dateNow,
-        "dateUpdated": dateNow 
+    let data = {
+        // "_id": "6474e721d0177e6dea75f4b0",
+        // "name": "Usuario incognito de pruebas",
+        // "description": "Nuevo token para uso en consumo de apis",
+        // "use": "Development", 
+        // "verifiedAccount": true, 
+        // "dateCreated": dateNow,
+        // "dateUpdated": dateNow 
+        _id: "64825dd21498aa328ad8d7d8",
+        idStatus: "647a73a6d47ece6731a4d979",
+        verifiedAccount: true,
+        email: "gpinilladev@gmail.com",
     };
     let dateExpired = moment().add(2, "days").add(1, "minutes").valueOf();
     let dateCreatedFormat = Utils.getDateFormat(dateNow, "DD MMMM YYYY, h:mm:ss a'");;
@@ -92,6 +97,50 @@ const uploadFileAndSaveBlob = async (req, res) => {
     }
 };
 /* *********** END - Carga un archivo, lo convierte a blob y luego lo almacena en el servidor *********** */
+const sendMail = async (req, res) => {
+    
+    let params = req.body;
+    console.log('params: ', params);
+
+    let template = await Utils.readFile('assets/email-templates/auth/test-development.html');
+    if (!template.statusRequest) {
+        res.status(500).send({ data: "No se pudo enviar el mail!", statusRequest: false });
+    } else {
+
+        let dateExpired = moment().add(10, "days").add(1, "minutes").valueOf();
+        let objUser = { 
+            _id: params._id, 
+            idStatus: params.idStatus,
+            verifiedAccount: false,
+            email: params.email,
+        };
+        let dataToken = await Utils.createToken(objUser, dateExpired);
+        let linkActivateAccount = "http://localhost:4200/#/auth/activate-account/" + dataToken.data
+
+
+        let dataUser = {
+            firstName: params.firstName,
+            lastName: params.lastName,
+            email: params.email,
+            subject: params.subject,
+        };
+        
+        let replacementsHTML = {
+            name: `${params.firstName} ${params.lastName}`,
+            email: params.email, 
+            linkActivateAccount: linkActivateAccount,
+        };
+            
+        let datMailSend = await Utils.sendMail(dataUser, template.data, replacementsHTML, null, null, null);
+        console.log('datMailSend: ', datMailSend);
+        if (!datMailSend.statusRequest) {
+            res.status(500).send({ data: "No se pudo enviar el mail!", statusRequest: false });
+        } else {
+            res.status(200).send({ data: { linkActivateAccount: linkActivateAccount, token: dataToken.data }, statusRequest: true });
+        }
+    }
+    
+};
 
 module.exports = {
     getNewToken,
@@ -99,4 +148,5 @@ module.exports = {
     readExcelFile,
     uploadAndReadExcelFile,
     uploadFileAndSaveBlob,
+    sendMail, 
 };

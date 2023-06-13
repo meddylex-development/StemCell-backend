@@ -7,9 +7,7 @@ let Utils = require("../utils/utils");
 /* ********** START - Activate account method ********** */
 const userActivateAccount = async (req, res) => {
     let token = req.params["token"];
-    console.log('token: ', token);
     let isValidToken = await Utils.verifyToken(token);
-    console.log('isValidToken: ', isValidToken);
     if (!isValidToken.statusRequest) {
         res.status(500).send({ data: isValidToken.data, statusRequest: false });
     } else {
@@ -25,24 +23,47 @@ const userSignIn = (req, res) => {
             res.status(500).send({ mensaje: "Error del servidor" });
         } else {
             if (dataUser) {
-                bcrypt.compare(params.password, dataUser.password, async (err, successDataCompare) => {
+                bcrypt.compare(params.password, dataUser.password, (err, successDataCompare) => {
                     if (successDataCompare) {
                         if (dataUser.idStatus) {
                             if (params.getToken) {
-                                let dateExpired = moment().add(10, "days").add(1, "minutes").valueOf();
-                                let objUser = { 
-                                    _id: dataUser._id, 
-                                    idStatus: dataUser.idStatus,
-                                    verifiedAccount: dataUser.verifiedAccount,
-                                    email: dataUser.email,
-                                };
-                                let dataToken = await Utils.createToken(objUser, dateExpired)
-                                if (!dataToken) {
-                                    res.status(500).send({ data: "Error al generar el token", statusRequest: false });
-                                } else {
-                                    // res.status(200).send({ token: `Bearer ${ dataToken.data }`, payload: dataToken.data, dateCreated: dateCreatedFormat, dateExpired: dateExpiredFormat, statusRequest: true });
-                                    res.status(200).send({ jwt: dataToken.data, user: dataUser, statusRequest: true });
-                                }
+
+                                User.findByIdAndUpdate(
+                                    { _id: dataUser._id }, 
+                                    { sessionStatus: true }, async (err, response) => {
+                                    if (err) {
+                                        res.status(500).send({ data: "Error al generar el token", statusRequest: false });
+                                    } else {
+                                        
+                                        let dateExpired = moment().add(10, "days").add(1, "minutes").valueOf();
+                                        let objUser = { 
+                                            _id: dataUser._id, 
+                                            idStatus: dataUser.idStatus,
+                                            verifiedAccount: dataUser.verifiedAccount,
+                                            email: dataUser.email,
+                                        };
+                                        let dataToken = await Utils.createToken(objUser, dateExpired);
+                                        let test = { _id, idStatus, idProfile, email, firstName, lastName, sessionStatus} = dataUser;
+                                        if (!dataToken) {
+                                            res.status(500).send({ data: "Error al generar el token", statusRequest: false });
+                                        } else {
+                                            // res.status(200).send({ token: `Bearer ${ dataToken.data }`, payload: dataToken.data, dateCreated: dateCreatedFormat, dateExpired: dateExpiredFormat, statusRequest: true });
+                                            res.status(200).send({ 
+                                                jwt: dataToken.data, 
+                                                user: { 
+                                                    _id: dataUser._id, 
+                                                    idStatus: dataUser.idStatus,
+                                                    idProfile: dataUser.idProfile,
+                                                    email: dataUser.email, 
+                                                    firstName: dataUser.firstName, 
+                                                    lastName: dataUser.lastName, 
+                                                    sessionStatus: dataUser.sessionStatus, 
+                                                    profilePicture: "http://meddylex-001-site7.atempurl.com/assets/images/avatar-default.jpg",
+                                                }, statusRequest: true });
+                                        }
+                                        
+                                    }
+                                });
                             } else {
                                 res.status(200).send({ data: dataUser, mensaje: "Sin token", statusRequest: false });
                             }

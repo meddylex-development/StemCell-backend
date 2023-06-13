@@ -130,14 +130,19 @@ let api = express.Router();
  *                          rememberMe: 
  *                              type: boolean
  *                              description: Recordar sesion
+ *                          getToken: 
+ *                              type: boolean
+ *                              description: Obtener el token verdadero / falso
  *                      required:
  *                          - email
  *                          - password
  *                          - rememberMe
+ *                          - getToken
  *                      example:
- *                          email: pepe.perez@test.com
- *                          password: PepePerez123
+ *                          email: gpinilladev@gmail.com
+ *                          password: 123456aA
  *                          rememberMe: true
+ *                          getToken: true
  *      responses:
  *          200: 
  *            description: Test sign in 
